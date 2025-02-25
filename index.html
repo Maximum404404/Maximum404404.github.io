@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('BG.jpg') no-repeat center bottom;
+            background-size: contain;
+            background-color: black;
+            color: white;
+            text-align: center;
+            height: auto; /* Allow content to dictate height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            font-weight: bold;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            margin: auto;
+            z-index: 1;
+            top: 5%; /* Move the container down to 95% of the height */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid white;
+            padding: 10px;
+            height: 200px; /* Set height to 200 pixels to match profile picture */
+        }
+
+        .clock {
+            width: 20%;
+            text-align: left;
+            font-size: 20px;
+        }
+
+        .title {
+            width: 60%;
+            font-size: 28px;
+        }
+
+        .profile-picture {
+            width: 20%;
+            text-align: right;
+        }
+
+        .profile-picture img {
+            width: 100%; /* Allow the image to scale to the container's width */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 200px; /* Maximum width of 200 pixels */
+            max-height: 200px; /* Maximum height of 200 pixels */
+            object-fit: cover; /* Ensures the image covers the dimensions */
+            border: 2px solid white;
+        }
+
+        /* Top Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-around; /* Changed back to space-around */
+            border: 2px solid white;
+            padding: 10px;
+            height: 90px; /* Set height back to 80 pixels */
+        }
+
+        .navigation a {
+            flex: 1;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            border-right: 1px solid white;
+        }
+
+        .navigation a:last-child {
+            border-right: none;
+        }
+
+        .navigation img {
+            width: 60px;  /* Small icon size */
+            height: 60px;
+            border: 2px solid white;
+        }
+
+        .contact-info, .about-me {
+            border: 2px solid white;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        /* Bottom Section with Second Set of Links */
+        .bottom-section {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .contact-info-again {
+            width: 50%;
+            border: 2px solid white;
+            padding: 15px;
+        }
+
+        .image-links {
+            width: 50%;
+            display: flex;
+            justify-content: space-around;
+            border: 2px solid white;
+            padding: 10px;
+        }
+
+        .image-links img {
+            width: 70%; /* Set width to 20% of the container */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 70px; /* Maximum width of 60 pixels */
+            max-height: 70px; /* Maximum height of 60 pixels */
+            border: 2px solid white;
+        }
+
+        .rain-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                url('rain.gif') no-repeat left center,  
+                url('rain.gif') no-repeat center center, 
+                url('rain.gif') no-repeat right center;  
+            background-size: contain; 
+            opacity: 0.5; 
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Audio Player Styles */
+        .audio-player {
+            margin-top: 20px; /* Space above the audio player */
+            border: 2px solid white; /* Border around the player */
+            padding: 10px; /* Padding inside the player */
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="rain-overlay"></div> <!-- Rain effect overlay -->
+
+    <div class="container">
+        <div class="header">
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="title">MAX NORRIS</div>
+            <div class="profile-picture">
+                <img src="prof.png" alt="Profile Picture">
+            </div>
+        </div>
+
+        <!-- Top Navigation Links -->
+        <div class="navigation">
+            <a href="https://github.com/Maximum404404?tab=overview&from=2025-01-01&to=2025-01-31">
+                <img src="git.png" alt="GitHub">
+            </a>
+            <a href="https://maximum404.itch.io/">
+                <img src="itch.png" alt="Itch.io">
+            </a>
+            <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw/playlists">
+                <img src="yout.png" alt="YouTube">
+            </a>
+            <a href="https://www.linkedin.com/in/max-norris-8239332a4/">
+                <img src="link.png" alt="LinkedIn">
+            </a>
+        </div>
+
+        <!-- Contact Info Box -->
+        <div class="contact-info">
+            <h2>Contact Info</h2>
+            <div>Colchester, Essex</div>
+            <p>Email: g4mes.portfo@gmail.com</p>
+            <p>Phone: 07472128742</p>
+            <p>Discord: "maximum404"</p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/max-norris-8239332a4/" style="color: white;">https://www.linkedin.com/in/max-norris-8239332a4/</a></p>
+            <p>Portfolios and past programming work can be found in the icons above and below.</p>
+            <p>Please see my GitHub for my main programming coding projects, my Itch.io for the games I have made over the years, my YouTube for gameplay videos of games I have made, as well as demonstrations of my coding projects.</p>
+        </div>
+
+        <div class="about-me">
+            <h1>About Me</h1>
+            <p>I am a dedicated and adaptable applicant with a strong work ethic, eager to contribute my expertise and passion to a dynamic team while balancing my university studies. With a proven track record of leveraging technology to drive efficiency, I have experience across various sectors, equipping me with a diverse skill set, including extensive IT proficiency in multiple platforms, website development, and coding languages such as Python, C++, C#, Java, and JavaScript. Currently on track for a 1st or 2:1 Games Programming degree accredited by Essex University, I am also well-versed in complex hardware and software scenarios. I thrive both independently and in team environments, enjoy working to targets and deadlines, and hold food safety and hygiene training from previous roles. Despite having a hearing impairment, I see it as a strength that has allowed me to develop unique skills and embrace various opportunities, with hearing aids being my only accommodation. Passionate about technology and film, I enjoy everything from classics like The Gumball Rally 3000 to modern releases like Smile 2. Hardworking and eager to learn, I am excited to expand my knowledge through employment and future opportunities.</p>
+        </div>
+
+        <!-- Bottom Section with Contact Info & Second Set of Links -->
+        <div class="bottom-section">
+            <div class="contact-info-again">
+                <h2>Contact Info Again</h2>
+                <p>Email: g4mes.portfo@gmail.com</p>
+                <p>Phone: 07472128742</p>
+                <p>Discord: "maximum404"</p>
+            </div>
+
+            <div class="image-links">
+                <a href="https://github.com/Maximum404404?tab=overview&from=2025-01-01&to=2025-01-31">
+                    <img src="git.png" alt="GitHub">
+                </a>
+                <a href="https://maximum404.itch.io/">
+                    <img src="itch.png" alt="Itch.io">
+                </a>
+                <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw/playlists">
+                    <img src="yout.png" alt="YouTube">
+                </a>
+                <a href="https://www.linkedin.com/in/max-norris-8239332a4/">
+                    <img src="link.png" alt="LinkedIn">
+                </a>
+            </div>
+        </div>
+
+        <!-- Audio Player -->
+        <div class="audio-player">
+            <audio controls>
+                <source src="portal.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').textContent = hours + ":" + minutes + ":" + seconds;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+
+</body>
+</html>
