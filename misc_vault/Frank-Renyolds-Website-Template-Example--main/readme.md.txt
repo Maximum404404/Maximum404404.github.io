@@ -1,0 +1,1 @@
+Unzip all folders, and place all unzipped folders into one single folder. And then open that folder in a java program

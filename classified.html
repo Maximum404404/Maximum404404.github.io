@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASSIFIED // Dev Archive | Max Norris</title>
+    <meta name="description" content="Restricted archive.">
+    <meta name="robots" content="noindex">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">Main Base Root</a>
+        <a href="Software.html">Software Vault</a>
+        <a href="Games.html">Games Vault</a>
+        <a href="Radio.html">Radio Stream</a>
+        <a href="Showreel.html">Video Showreel</a>
+        <a href="Feeds.html">Feeds</a>
+        <a href="Misc.html">Misc Projects</a>
+    </nav>
+
+    <div class="container">
+
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>☣ Classified</h1>
+                <div class="subtitle">Restricted Dev Archive</div>
+            </div>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris profile photo" width="120" height="120">
+            </div>
+        </header>
+
+        <nav class="glass-panel interactive-nav">
+            <div class="nav-node"><a href="https://github.com/Maximum404404" target="_blank"><img src="git.png" alt="GitHub" width="55" height="55"></a><span class="tooltip">GitHub Code Architecture</span></div>
+            <div class="nav-node"><a href="https://maximum404.itch.io/" target="_blank"><img src="itch.png" alt="Itch.io" width="55" height="55"></a><span class="tooltip">Itch.io Experimental Prototypes</span></div>
+            <div class="nav-node"><a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank"><img src="yout.png" alt="YouTube" width="55" height="55"></a><span class="tooltip">YouTube Technical Video Showreels</span></div>
+            <div class="nav-node"><a href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank"><img src="link.png" alt="LinkedIn" width="55" height="55"></a><span class="tooltip">Professional LinkedIn Connect</span></div>
+        </nav>
+
+        <!-- BOOT / OVERVIEW: what unlocking developer mode gives you -->
+        <section class="glass-panel dev-overview">
+            <h2>&gt; DEVELOPER MODE ONLINE</h2>
+            <p>Access granted, operator. Unlocking dev mode reveals the systems below. They stay unlocked as you move between pages.</p>
+            <div class="feature-grid">
+                <div class="dev-feature">
+                    <h3>⌨ Terminal</h3>
+                    <p>Type commands to drive the whole site. Press <span class="key">`</span> anytime, or use the live terminal at the bottom of this page.</p>
+                </div>
+                <div class="dev-feature">
+                    <h3>&gt;_ Command Deck</h3>
+                    <p>A full-screen terminal page. Type <span class="key">cmd</span> or open it below.</p>
+                </div>
+                <div class="dev-feature">
+                    <h3>▶ Asteroids-Mini</h3>
+                    <p>A playable game in an overlay. Type <span class="key">game</span> or hit the button below.</p>
+                </div>
+                <div class="dev-feature">
+                    <h3>☣ Classified Vault</h3>
+                    <p>This archive — scrapped prototypes &amp; behind-the-scenes. Click a file to decrypt it.</p>
+                </div>
+                <div class="dev-feature">
+                    <h3>⚡ Matrix Rain</h3>
+                    <p>The green digital-rain takeover. Type <span class="key">matrix</span> to run it again.</p>
+                </div>
+                <div class="dev-feature">
+                    <h3>🟢 Dev Theme</h3>
+                    <p>The green "matrix" reskin. Type <span class="key">theme</span> to toggle it.</p>
+                </div>
+            </div>
+            <div class="cv-actions" style="margin-top:20px; justify-content:flex-start;">
+                <a href="cmd.html" class="btn-prime">⌨ Open Command Deck ↗</a>
+                <button class="btn-sec" onclick="launchMiniGame()">▶ Asteroids-Mini</button>
+                <button class="btn-sec" onclick="matrixRain()">⚡ Matrix Rain</button>
+            </div>
+        </section>
+
+        <section class="glass-panel" style="border-color: rgba(255,92,92,0.4);">
+            <h2 style="color:#ff5c5c;">⚠ Restricted Files</h2>
+            <p>Click a file to decrypt it. Replace these with your own scrapped projects, postmortems, and experiments (edit <code>classified.html</code>).</p>
+
+            <div class="showcase-deck">
+                <div class="showcase-card card-link"
+                     data-title="Prototype Zero"
+                     data-status="STATUS: SCRAPPED"
+                     data-body="An early build that got cut before it ever shipped. This is a placeholder dossier — drop in a real scrapped project here: what it was, why you killed it, and what you learned."
+                     onclick="openDossier(this)">
+                    <span class="showcase-badge badge-pinned">SCRAPPED</span>
+                    <h3>Prototype Zero</h3>
+                    <p>An early build that got cut. Decrypt to read the file.</p>
+                    <span class="showcase-link">DECRYPT FILE ↗</span>
+                </div>
+                <div class="showcase-card card-link"
+                     data-title="Build Logs"
+                     data-status="STATUS: BEHIND THE SCENES"
+                     data-body="Dev notes, broken experiments, and the things that didn't work — the honest stuff that never makes the main vaults. Swap in your real build logs / postmortems."
+                     onclick="openDossier(this)">
+                    <span class="showcase-badge badge-pinned">BEHIND THE SCENES</span>
+                    <h3>Build Logs</h3>
+                    <p>Dev notes and broken experiments. Decrypt to read.</p>
+                    <span class="showcase-link">DECRYPT FILE ↗</span>
+                </div>
+                <div class="showcase-card card-link"
+                     data-title="Lab Node"
+                     data-status="STATUS: EXPERIMENTAL"
+                     data-body="Half-finished ideas and tech demos kept off the main grid. Replace with your own experiments, shaders, or prototypes you're not ready to show publicly yet."
+                     onclick="openDossier(this)">
+                    <span class="showcase-badge badge-pinned">EXPERIMENTAL</span>
+                    <h3>Lab Node</h3>
+                    <p>Half-finished ideas and tech demos. Decrypt to read.</p>
+                    <span class="showcase-link">DECRYPT FILE ↗</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live embedded terminal -->
+        <section class="glass-panel">
+            <h2>Live Terminal</h2>
+            <p style="color:#aaa;">Type <code>help</code> for the command list.</p>
+            <div class="term-embed" data-terminal></div>
+        </section>
+
+        <div class="cv-actions" style="margin-bottom:25px;">
+            <a href="index.html" class="btn-sec">↩ Return to Main Base Root</a>
+        </div>
+
+        <footer class="glass-panel">
+            <div class="audio-console">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)">
+                    <div class="audio-timeline-fill" id="trackFill"></div>
+                </div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
+
+    </div>
+
+    <!-- Dossier modal (decrypted file viewer) -->
+    <div class="dossier" id="dossier">
+        <div class="dossier-inner glass-panel">
+            <button class="dossier-close" aria-label="Close" onclick="closeDossier()">✕</button>
+            <p class="d-status" id="dossierStatus">STATUS</p>
+            <h2 id="dossierTitle" style="border:none; margin:0 0 14px;">File</h2>
+            <p class="d-body" id="dossierBody"></p>
+        </div>
+    </div>
+
+    <script>
+        function openDossier(card) {
+            document.getElementById('dossierTitle').textContent = card.dataset.title || 'File';
+            document.getElementById('dossierStatus').textContent = card.dataset.status || '';
+            document.getElementById('dossierBody').textContent = card.dataset.body || '';
+            document.getElementById('dossier').classList.add('show');
+        }
+        function closeDossier() { document.getElementById('dossier').classList.remove('show'); }
+        document.getElementById('dossier').addEventListener('click', e => { if (e.target.id === 'dossier') closeDossier(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDossier(); });
+    </script>
+
+</body>
+</html>

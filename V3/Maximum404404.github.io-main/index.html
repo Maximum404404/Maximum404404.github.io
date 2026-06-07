@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Norris | Essex Games Programmer Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="menu-loader.js"></script>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">Main Base Root</a>
+        <a href="Software.html">Software Vault</a>
+        <a href="Games.html">Games Vault</a>
+        <a href="Radio.html">Media Showreel</a>
+        <a href="Feeds.html">Feeds</a>
+        <a href="Misc.html">Misc Projects</a>
+    </nav>
+
+    <div class="container">
+        
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>Max Norris</h1>
+                <div class="subtitle">Games Programmer & Developer</div>
+            </div>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris Profile Image">
+            </div>
+        </header>
+
+        <nav class="glass-panel interactive-nav">
+            <div class="nav-node">
+                <a href="https://github.com/Maximum404404" target="_blank"><img src="git.png" alt="GitHub"></a>
+                <span class="tooltip">GitHub Code Architecture</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://maximum404.itch.io/" target="_blank"><img src="itch.png" alt="Itch.io"></a>
+                <span class="tooltip">Itch.io Experimental Prototypes</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank"><img src="yout.png" alt="YouTube"></a>
+                <span class="tooltip">YouTube Technical Video Showreels</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank"><img src="link.png" alt="LinkedIn"></a>
+                <span class="tooltip">Professional LinkedIn Connect</span>
+            </div>
+        </nav>
+
+        <section class="glass-panel">
+            <h2>Executive Background Profile</h2>
+            <p>A technically proficient BSc (Hons) Computer Games (And Programming) graduate (2:1) from the University of Essex, combining sharp gameplay system architecture capabilities with valuable professional experience in high-pressure operational environments. Adept at managing real-time data accuracy, system navigation, and technical problem-solving under tight deadlines, as demonstrated through department placements within the NHS and structured logistics tracking at Royal Mail. Meticulous focus and proactive fault diagnosis drive an engineering mindset specialized in producing seamless, high-performance gameplay controllers and automated computational systems.</p>
+            
+            <div class="cv-actions">
+                <a href="Max_Norris_CV_2026 V3.pdf" target="_blank" class="btn-prime">View CV Document</a>
+                <a href="Max_Norris_CV_2026 V3.pdf" download="Max_Norris_CV_2026_V3.pdf" class="btn-sec">Download CV (PDF)</a>
+            </div>
+        </section>
+
+        <section class="glass-panel pinned-panel-wrapper">
+            <div class="pinned-flex-header">
+                <h2>Pinned Capstone Engineering Project</h2>
+                <span class="lang-tag" style="color: #fff; font-weight: bold; border: 1px solid #fff; padding: 2px 6px;">Python / API</span>
+            </div>
+            <h3>REALTIME AI TWITCH CHAT FOR SMALL STREAMERS</h3>
+            <p style="margin-top: 10px;">Engineered a complex, real-time data processing system using Python and third-party APIs to monitor live audio/visual inputs and ensure the system generated accurate, contextually relevant automated responses. Built to process fast-moving data streams efficiently and optimize interaction layers under active deployment conditions.</p>
+            <div class="pinned-action-row">
+                <span class="lang-tag">Infrastructure Automation & Data Integrity</span>
+                <a href="https://github.com/Maximum404404/Realtime-AI-Twitch-Chat-For-Small-Streamers" target="_blank" class="showcase-link">Access Repository System ↗</a>
+            </div>
+        </section>
+
+        <section class="glass-panel" style="text-align: center;">
+            <h2>Project Pool Matrix Carousel</h2>
+            <div class="search-container">
+                <input type="text" class="search-input" id="matrixSearch" placeholder="FILTER POOL BY LANGUAGE, KEYWORD, OR ASSIGNED TAG..." oninput="filterShowcaseResults()">
+            </div>
+            <div class="showcase-deck" id="showcaseDeck"></div>
+            <div class="carousel-controls">
+                <button class="reroll-btn" id="rerollBtn" onclick="generateRandomShowcase()">Reroll Showcase Selection</button>
+            </div>
+        </section>
+
+        <section class="glass-panel">
+            <h2>Secure Transmission Matrix</h2>
+            <p style="text-align: center; margin-bottom: 15px; color: #aaa;">Submit communications requests directly to the core development inbox below.</p>
+            <form class="contact-form" action="https://formspree.io/f/mzdwogwv" method="POST">
+                <input type="text" name="name" placeholder="Sender Name / Corporate Unit" required>
+                <input type="email" name="_replyto" placeholder="Return Correspondence Address" required>
+                <textarea name="message" rows="5" placeholder="Write message body content rules here..." required></textarea>
+                <button type="submit">Deploy Transmission</button>
+            </form>
+        </section>
+
+        <section class="glass-panel">
+            <h2>Communication Matrix</h2>
+            <div class="contact-grid">
+                <div class="contact-node">
+                    <h4>Direct Secure Email</h4>
+                    <p><a href="mailto:G4mes.portfo@gmail.com">G4mes.portfo@gmail.com</a></p>
+                </div>
+                <div class="contact-node">
+                    <h4>Voice Communications Line</h4>
+                    <p>(available upon request)</p>
+                </div>
+                <div class="contact-node">
+                    <h4>Discord Handling Node</h4>
+                    <p>maximum404</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="glass-panel">
+            <div class="custom-audio">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)">
+                    <div class="audio-timeline-fill" id="trackFill"></div>
+                </div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
+    </div>
+
+    <script>
+        function triggerClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = 
+                now.getHours().toString().padStart(2, '0') + ":" + 
+                now.getMinutes().toString().padStart(2, '0') + ":" + 
+                now.getSeconds().toString().padStart(2, '0');
+        }
+        setInterval(triggerClock, 1000);
+        triggerClock();
+
+        const staticItchProjects = [
+            { name: "Tempo of the Fist: Neon Bloodline", desc: "A rhythm-based 2.5D fighting system built around tight audio calibration clocks.", link: "https://maximum404.itch.io/", type: "itch", lang: "C# / Unity" },
+            { name: "HTML5 Retro Arcade Framework", desc: "Lightweight browser engine executing arcade-style state logic patterns.", link: "https://maximum404.itch.io/", type: "itch", lang: "JavaScript" }
+        ];
+
+        const staticYoutubeVideos = [
+            { name: "Forza Motorsport Analytical Essay", desc: "Deep technical breakdown evaluating tyre slip simulation models and telemetry mapping.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "Premiere Pro" },
+            { name: "Gameplay System Architecture Overview", desc: "Video breakdown showcasing clean modular controller architectures and AI state machines.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "C++ / Engine" },
+            { name: "Automated Video Pipeline Demonstration", desc: "A screen-capture proof demonstrating custom tools reading structured video parameters.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "Python Automation" }
+        ];
+
+        let globalMasterPool = [];
+        let currentSelection = [];
+
+        async function generateRandomShowcase() {
+            const deck = document.getElementById('showcaseDeck');
+            document.getElementById('matrixSearch').value = '';
+            document.getElementById('rerollBtn').style.display = 'inline-block';
+            deck.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Querying environment pools...</p>';
+            
+            let fetchPool = [];
+            try {
+                const response = await fetch('https://api.github.com/users/Maximum404404/repos?sort=updated');
+                if (response.ok) {
+                    const repos = await response.json();
+                    repos.forEach(repo => {
+                        if(repo.name !== 'Realtime-AI-Twitch-Chat-For-Small-Streamers') {
+                            fetchPool.push({
+                                name: repo.name.replace(/-/g, ' ').toUpperCase(),
+                                desc: repo.description || "Source code repository containing structural architectures and algorithmic systems.",
+                                link: repo.html_url,
+                                type: "github",
+                                lang: repo.language || "C++"
+                            });
+                        }
+                    });
+                }
+            } catch (err) { console.warn("GitHub live feed fallback active."); }
+
+            globalMasterPool = [...fetchPool, ...staticItchProjects, ...staticYoutubeVideos];
+            const randomItems = [];
+            const poolClone = [...globalMasterPool];
+            const limit = Math.min(3, poolClone.length);
+            for (let i = 0; i < limit; i++) {
+                const randomIdx = Math.floor(Math.random() * poolClone.length);
+                randomItems.push(poolClone.splice(randomIdx, 1)[0]);
+            }
+            currentSelection = [...randomItems];
+            renderCards(currentSelection);
+        }
+
+        function filterShowcaseResults() {
+            const query = document.getElementById('matrixSearch').value.toLowerCase().trim();
+            const rerollBtn = document.getElementById('rerollBtn');
+            if (query === '') {
+                rerollBtn.style.display = 'inline-block';
+                renderCards(currentSelection);
+                return;
+            }
+            rerollBtn.style.display = 'none';
+            const filtered = globalMasterPool.filter(item => {
+                return item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query) || item.type.toLowerCase().includes(query) || item.lang.toLowerCase().includes(query);
+            });
+            renderCards(filtered, true);
+        }
+
+        function renderCards(itemsList, isSearchActive = false) {
+            const deck = document.getElementById('showcaseDeck');
+            if (itemsList.length === 0) {
+                deck.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #aaa;">No matrix elements found matching that query parameter.</p>';
+                return;
+            }
+            deck.innerHTML = '';
+            itemsList.forEach((item, index) => {
+                let badgeClass = `badge-${item.type}`;
+                let badgeText = item.type === 'github' ? 'GitHub Repo' : item.type === 'itch' ? 'Itch.io Game' : 'YouTube Video';
+                deck.innerHTML += `
+                    <div class="showcase-card" style="animation-delay: ${isSearchActive ? 0 : index * 0.12}s;">
+                        <div>
+                            <div class="showcase-meta-row">
+                                <span class="showcase-badge ${badgeClass}">${badgeText}</span>
+                                <span class="lang-tag">${item.lang}</span>
+                            </div>
+                            <h3>${item.name}</h3>
+                            <p>${item.desc}</p>
+                        </div>
+                        <a href="${item.link}" target="_blank" class="showcase-link">Initialize Source ↗</a>
+                    </div>
+                `;
+            });
+        }
+        generateRandomShowcase();
+
+        const sound = document.getElementById('audioSource');
+        const playBtn = document.getElementById('playBtn');
+        const trackFill = document.getElementById('trackFill');
+        const trackBar = document.getElementById('trackBar');
+
+        function controlAudio() {
+            if (sound.paused) { sound.play(); playBtn.textContent = "‖"; } 
+            else { sound.pause(); playBtn.textContent = "▶"; }
+        }
+
+        sound.addEventListener('timeupdate', () => {
+            const currentPercentage = (sound.currentTime / sound.duration) * 100;
+            trackFill.style.width = currentPercentage + '%';
+        });
+
+        function navigateAudio(e) {
+            const totalWidth = trackBar.clientWidth;
+            const clickPositionX = e.offsetX;
+            sound.currentTime = (clickPositionX / totalWidth) * sound.duration;
+        }
+    </script>
+</body>
+</html>

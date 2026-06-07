@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 · Signal Lost | Max Norris</title>
+    <meta name="description" content="Node not found — the page you requested does not exist on this matrix.">
+    <meta name="robots" content="noindex">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Root-relative so assets resolve even when the bad URL is a deep path -->
+    <link rel="stylesheet" href="/style.css">
+    <script src="/main.js" defer></script>
+
+    <style>
+        .nf-wrap {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 14px;
+        }
+        .nf-code {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(70px, 18vw, 170px);
+            line-height: 1;
+            letter-spacing: 6px;
+            color: #fff;
+            position: relative;
+            animation: nfGlitch 2.6s infinite steps(1);
+        }
+        @keyframes nfGlitch {
+            0%, 92%, 100% { text-shadow: 0 0 18px var(--glow-color); transform: translate(0,0); }
+            93% { text-shadow: -3px 0 #ff3b3b, 3px 0 #00e0ff; transform: translate(2px, -1px); }
+            95% { text-shadow: 3px 0 #ff3b3b, -3px 0 #00e0ff; transform: translate(-2px, 1px); }
+            97% { text-shadow: -2px 0 #ff3b3b, 2px 0 #00e0ff; transform: translate(1px, 0); }
+        }
+        .nf-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ff5c5c;
+        }
+        .nf-msg { color: #aaa; max-width: 460px; text-align: center; }
+        .nf-actions { margin-top: 14px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="/index.html">Main Base Root</a>
+        <a href="/Software.html">Software Vault</a>
+        <a href="/Games.html">Games Vault</a>
+        <a href="/Radio.html">Radio Stream</a>
+        <a href="/Showreel.html">Video Showreel</a>
+        <a href="/Feeds.html">Feeds</a>
+        <a href="/Misc.html">Misc Projects</a>
+    </nav>
+
+    <div class="container">
+        <section class="glass-panel">
+            <div class="nf-wrap">
+                <div class="nf-code">404</div>
+                <div class="nf-title">Signal Lost</div>
+                <p class="nf-msg">The node you requested could not be located on this matrix. It may have been moved, decommissioned, or never existed.</p>
+                <div class="nf-actions">
+                    <a href="/index.html" class="btn-prime">Return to Main Base Root ↗</a>
+                    <a href="/Showreel.html" class="btn-sec">Video Showreel</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

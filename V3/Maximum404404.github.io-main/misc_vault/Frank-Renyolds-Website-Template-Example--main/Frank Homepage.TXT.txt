@@ -1,0 +1,21 @@
+
+
+	</html>
+	
+	  <body>
+	  <h1>FRANK RENYOLDS</h1>
+	  <h2>SEXIEST AND RICHEST MAN ALIVE</h2>
+	  <p>I Frank renyolds am well known for many things such as my millions from succsessful buisnesses or my brillaint taste in women</p>
+	  <p>text, text text, text</p>
+	  </body>
+	  
+	</html>
+	
+		<html>
+
+	  <head>
+	  </head>
+
+	  <body>
+	  <p>Hurrah! This is my website.</p>
+	  </body>

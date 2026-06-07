@@ -3,245 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <title>Max Norris | Essex Games Programmer Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    
+    <meta name="description" content="Max Norris — University of Essex BSc (Hons) Games Programming graduate. Portfolio of games, software and technical projects across C#, Java, Python, Unity and Unreal Engine.">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Max Norris | Games Programmer Portfolio">
+    <meta property="og:description" content="Games & software engineering portfolio — playable projects, technical showreels and live dev feeds.">
+    <meta property="og:image" content="https://maximum404404.github.io/prof.png">
+    <meta property="og:url" content="https://maximum404404.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
 
-        body {
-            font-family: Arial, sans-serif;
-            background: url('BG.jpg') no-repeat center bottom;
-            background-size: contain;
-            background-color: black;
-            color: white;
-            text-align: center;
-            height: auto; /* Allow content to dictate height */
-            overflow-y: auto; /* Enable vertical scrolling */
-            font-weight: bold;
-        }
-
-        .container {
-            position: relative;
-            width: 90%;
-            margin: auto;
-            z-index: 1;
-            top: 5%; /* Move the container down to 95% of the height */
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 2px solid white;
-            padding: 10px;
-            height: 200px; /* Set height to 200 pixels to match profile picture */
-        }
-
-        .clock {
-            width: 20%;
-            text-align: left;
-            font-size: 20px;
-        }
-
-        .title {
-            width: 60%;
-            font-size: 28px;
-        }
-
-        .profile-picture {
-            width: 20%;
-            text-align: right;
-        }
-
-        .profile-picture img {
-            width: 100%; /* Allow the image to scale to the container's width */
-            height: auto; /* Maintain aspect ratio */
-            max-width: 200px; /* Maximum width of 200 pixels */
-            max-height: 200px; /* Maximum height of 200 pixels */
-            object-fit: cover; /* Ensures the image covers the dimensions */
-            border: 2px solid white;
-        }
-
-        /* Top Navigation */
-        .navigation {
-            display: flex;
-            justify-content: space-around; /* Changed back to space-around */
-            border: 2px solid white;
-            padding: 10px;
-            height: 90px; /* Set height back to 80 pixels */
-        }
-
-        .navigation a {
-            flex: 1;
-            padding: 10px;
-            text-decoration: none;
-            color: white;
-            border-right: 1px solid white;
-        }
-
-        .navigation a:last-child {
-            border-right: none;
-        }
-
-        .navigation img {
-            width: 60px;  /* Small icon size */
-            height: 60px;
-            border: 2px solid white;
-        }
-
-        .contact-info, .about-me {
-            border: 2px solid white;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        /* Bottom Section with Second Set of Links */
-        .bottom-section {
-            display: flex;
-            margin-top: 10px;
-        }
-
-        .contact-info-again {
-            width: 50%;
-            border: 2px solid white;
-            padding: 15px;
-        }
-
-        .image-links {
-            width: 50%;
-            display: flex;
-            justify-content: space-around;
-            border: 2px solid white;
-            padding: 10px;
-        }
-
-        .image-links img {
-            width: 70%; /* Set width to 20% of the container */
-            height: auto; /* Maintain aspect ratio */
-            max-width: 70px; /* Maximum width of 60 pixels */
-            max-height: 70px; /* Maximum height of 60 pixels */
-            border: 2px solid white;
-        }
-
-        .rain-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                url('rain.gif') no-repeat left center,  
-                url('rain.gif') no-repeat center center, 
-                url('rain.gif') no-repeat right center;  
-            background-size: contain; 
-            opacity: 0.5; 
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Audio Player Styles */
-        .audio-player {
-            margin-top: 20px; /* Space above the audio player */
-            border: 2px solid white; /* Border around the player */
-            padding: 10px; /* Padding inside the player */
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
 </head>
 <body>
 
-    <div class="rain-overlay"></div> <!-- Rain effect overlay -->
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">Main Base Root</a>
+        <a href="Software.html">Software Vault</a>
+        <a href="Games.html">Games Vault</a>
+        <a href="Radio.html">Radio Stream</a>
+        <a href="Showreel.html">Video Showreel</a>
+        <a href="Feeds.html">Feeds</a>
+        <a href="Misc.html">Misc Projects</a>
+    </nav>
 
     <div class="container">
-        <div class="header">
-            <div class="clock" id="clock">00:00:00</div>
-            <div class="title">MAX NORRIS</div>
-            <div class="profile-picture">
-                <img src="prof.png" alt="Profile Picture">
+        
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>Max Norris</h1>
+                <div class="subtitle">Games Programmer & Developer</div>
             </div>
-        </div>
-
-        <!-- Top Navigation Links -->
-        <div class="navigation">
-            <a href="https://github.com/Maximum404404?tab=overview&from=2025-01-01&to=2025-01-31">
-                <img src="git.png" alt="GitHub">
-            </a>
-            <a href="https://maximum404.itch.io/">
-                <img src="itch.png" alt="Itch.io">
-            </a>
-            <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw/playlists">
-                <img src="yout.png" alt="YouTube">
-            </a>
-            <a href="https://www.linkedin.com/in/max-norris-8239332a4/">
-                <img src="link.png" alt="LinkedIn">
-            </a>
-        </div>
-
-        <!-- Contact Info Box -->
-        <div class="contact-info">
-            <h2>Contact Info</h2>
-            <p>Email: G4mes.portfo@gmail.com</p>
-            <p>Phone: 07472128742</p>
-            <p>Discord: "maximum404"</p>
-            <p>LinkedIn: <a href="https://www.linkedin.com/in/max-norris-8239332a4/" style="color: white;">https://www.linkedin.com/in/max-norris-8239332a4/</a></p>
-            <p>Portfolios and past programming work can be found in the icons above and below.</p>
-            <p>Please see my GitHub for my main programming coding projects, my Itch.io for the games I have made over the years, my YouTube for gameplay videos of games I have made, as well as demonstrations of my coding projects.</p>
-        </div>
-
-        <div class="about-me">
-            <h1>About Me</h1>
-            <p>Upper 2:1 Graduate (Near 1st) At Essex University Studying BSc Computer Games  </p>
-            <p>A technically-driven Games Programmer, having recently achieved an upper 2:1 in a Games Programming degree accredited by Essex University, specializing in gameplay mechanics and AI development. My comprehensive technical skillset spans C++, C#, Python, and JavaScript, with a portfolio of projects demonstrating the ability to architect robust gameplay systems. This includes engineering modular AI systems, implementing complex finite state machines for NPC behaviour, and developing responsive player controllers. This technical expertise is complemented by an exceptional focus, honed by a hearing impairment, and a creative perspective on narrative pacing informed by a passion for film. I am seeking a Gameplay Programmer role where I can apply my strong problem-solving abilities to engineer the engaging, moment-to-moment experiences that define great games.</p>
-        </div>
-
-        <!-- Bottom Section with Contact Info & Second Set of Links -->
-        <div class="bottom-section">
-            <div class="contact-info-again">
-                <h2>Contact Info Again</h2>
-                <p>Email: G4mes.portfo@gmail.com</p>
-                <p>Phone: 07472128742</p>
-                <p>Discord: "maximum404"</p>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris profile photo" width="120" height="120">
             </div>
+        </header>
 
-            <div class="image-links">
-                <a href="https://github.com/Maximum404404?tab=overview&from=2025-01-01&to=2025-01-31">
-                    <img src="git.png" alt="GitHub">
-                </a>
-                <a href="https://maximum404.itch.io/">
-                    <img src="itch.png" alt="Itch.io">
-                </a>
-                <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw/playlists">
-                    <img src="yout.png" alt="YouTube">
-                </a>
-                <a href="https://www.linkedin.com/in/max-norris-8239332a4/">
-                    <img src="link.png" alt="LinkedIn">
-                </a>
+        <nav class="glass-panel interactive-nav">
+            <div class="nav-node"><a href="https://github.com/Maximum404404" target="_blank"><img src="git.png" alt="GitHub" width="55" height="55"></a><span class="tooltip">GitHub Code Architecture</span></div>
+            <div class="nav-node"><a href="https://maximum404.itch.io/" target="_blank"><img src="itch.png" alt="Itch.io" width="55" height="55"></a><span class="tooltip">Itch.io Experimental Prototypes</span></div>
+            <div class="nav-node"><a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank"><img src="yout.png" alt="YouTube" width="55" height="55"></a><span class="tooltip">YouTube Technical Video Showreels</span></div>
+            <div class="nav-node"><a href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank"><img src="link.png" alt="LinkedIn" width="55" height="55"></a><span class="tooltip">Professional LinkedIn Connect</span></div>
+        </nav>
+
+        <section class="glass-panel">
+            <h2>Executive Background Profile</h2>
+            <p>A technically proficient BSc (Hons) Computer Games (And Programming) graduate (2:1) from the University of Essex, combining sharp gameplay system architecture capabilities with valuable professional experience.</p>
+            <div class="cv-actions">
+                <a href="Max_Norris_CV_2026 V3.pdf" target="_blank" class="btn-prime">View CV Document</a>
+                <a href="Max_Norris_CV_2026 V3.pdf" download="Max_Norris_CV_2026_V3.pdf" class="btn-sec">Download CV (PDF)</a>
             </div>
-        </div>
+        </section>
 
-        <!-- Audio Player -->
-        <div class="audio-player">
-            <audio controls>
-                <source src="portal.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
+        <!-- Edit the data-count / data-suffix numbers below to keep these accurate -->
+        <section class="glass-panel" style="text-align:center;">
+            <h2>System Telemetry</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-num" data-count="40" data-suffix="+">0</div>
+                    <div class="stat-label">Projects Built</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" data-count="35" data-suffix="+">0</div>
+                    <div class="stat-label">Code Repositories</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" data-count="22">0</div>
+                    <div class="stat-label">Showreel Videos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num" data-count="5">0</div>
+                    <div class="stat-label">Years Coding</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel pinned-panel-wrapper">
+            <h2>Pinned Capstone Engineering Project</h2>
+            <h3>REALTIME AI TWITCH CHAT FOR SMALL STREAMERS</h3>
+            <p style="margin-top: 10px;">Engineered a complex, real-time data processing system using Python and third-party APIs to monitor live audio/visual inputs.</p>
+            <div class="pinned-action-row">
+                <a href="https://github.com/Maximum404404/Realtime-AI-Twitch-Chat-For-Small-Streamers" target="_blank" class="showcase-link">Access Repository System ↗</a>
+            </div>
+        </section>
+
+        <section class="glass-panel" style="text-align: center;">
+            <h2>Project Pool Matrix Carousel</h2>
+            <div class="search-container">
+                <input type="text" class="search-input" id="matrixSearch" placeholder="FILTER POOL..." oninput="filterShowcaseResults()">
+            </div>
+            <div class="showcase-deck" id="showcaseDeck"></div>
+            <div class="carousel-controls">
+                <button class="reroll-btn" id="rerollBtn" onclick="generateRandomShowcase()">Reroll Showcase Selection</button>
+            </div>
+        </section>
+
+        <section class="glass-panel">
+            <h2>Secure Transmission Matrix</h2>
+            <form class="contact-form" action="https://formspree.io/f/mzdwogwv" method="POST">
+                <input type="text" name="name" placeholder="Sender Name" required>
+                <input type="email" name="_replyto" placeholder="Return Address" required>
+                <textarea name="message" rows="5" placeholder="Message content..." required></textarea>
+                <button type="submit">Deploy Transmission</button>
+            </form>
+        </section>
+
+        <footer class="glass-panel">
+            <div class="audio-console">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)"><div class="audio-timeline-fill" id="trackFill"></div></div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
     </div>
 
     <script>
-        function updateClock() {
-            const now = new Date();
-            let hours = now.getHours().toString().padStart(2, '0');
-            let minutes = now.getMinutes().toString().padStart(2, '0');
-            let seconds = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').textContent = hours + ":" + minutes + ":" + seconds;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
+        /* Sidebar, live clock and the audio console now live in main.js */
 
+        // Cache JSON in localStorage with a TTL — speeds loads and avoids
+        // hitting GitHub's 60-requests/hour unauthenticated rate limit.
+        async function cachedJSON(url, key, ttlMs) {
+            try {
+                const hit = JSON.parse(localStorage.getItem(key));
+                if (hit && (Date.now() - hit.t) < ttlMs) return hit.d;
+            } catch (e) {}
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('fetch failed: ' + res.status);
+            const data = await res.json();
+            try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) {}
+            return data;
+        }
+
+        const baseLibrary = [
+            // GitHub (manually curated — GitHub API adds all other public repos automatically)
+            { name: "Smart Mirror",     desc: "IoT dashboard software",    link: "https://github.com/Maximum404404/Smart-Mirror-Software",              type: "github", lang: "Node.js" },
+            { name: "Tic Tac Toe AI",   desc: "Java AI opponent",          link: "https://github.com/Maximum404404/Tic-Tac-Toe-Game--With-AI-Opponent-", type: "github", lang: "Java"    },
+            { name: "Advanced Banking", desc: "Finance management system", link: "https://github.com/Maximum404404/Advanced-Coded-Banking-System",       type: "github", lang: "Java"    },
+            { name: "Robotics Nav",     desc: "Pathfinding research",      link: "https://github.com/Maximum404404/Robotics-Navigation",                 type: "github", lang: "Python"  },
+            // Itch.io
+            { name: "Tempo of the Fist",    desc: "Rhythm fighting system",         link: "https://maximum404.itch.io/hitthecurbzack",                               type: "itch", lang: "C#"     },
+            { name: "Asteroids Spoof",      desc: "Java arcade game",               link: "https://maximum404.itch.io/asteroids-game-spoof-java",                    type: "itch", lang: "Java"   },
+            { name: "DT Horror Sequel",     desc: "Point & click horror prototype", link: "https://maximum404.itch.io/dt-game-pt-horror-prototype-sequel",            type: "itch", lang: "Unity"  },
+            { name: "AI Livestream Chat",   desc: "ChatGPT stream overlay game",    link: "https://maximum404.itch.io/chatgpt-ai-livestream-chat",                   type: "itch", lang: "Python" },
+            { name: "Pop Bubble Jam",       desc: "Game jam 2025 entry",            link: "https://maximum404.itch.io/pop-game-bubble-gamejam-2025",                 type: "itch", lang: "C#"     },
+            { name: "R3TR0 Arcade",         desc: "Retro arcade experience",        link: "https://maximum404.itch.io/r3tr0",                                        type: "itch", lang: "C#"     },
+            { name: "Here's Christine UE5", desc: "Unreal Engine 5 remake demo",    link: "https://maximum404.itch.io/heres-christine-unreal-engine-remake-ue5-demo", type: "itch", lang: "UE5"   },
+            { name: "Victorian Rooftops",   desc: "3D environment exploration",     link: "https://maximum404.itch.io/the-roofs-of-the-victoren-era",                type: "itch", lang: "UE5"   },
+            { name: "Hole Lotta Wipeouts",  desc: "Extreme obstacle course game",   link: "https://maximum404.itch.io/hole-lotta-wipeouts-xtreme-edition",           type: "itch", lang: "C#"     },
+            { name: "Flash Camera Game",    desc: "Camera mechanics prototype",     link: "https://maximum404.itch.io/flash-camera-game",                            type: "itch", lang: "C#"     },
+            { name: "Asphalt Odyssey 3000", desc: "Racing game design document",    link: "https://maximum404.itch.io/asphalt-oddessy-3000-game-design-document",    type: "itch", lang: "GDD"    },
+            { name: "Here's Christine",     desc: "Original horror game",           link: "https://maximum404.itch.io/heres-christine-the-game",                     type: "itch", lang: "Unity"  },
+            { name: "Medieval Tron",        desc: "Medieval arena combat game",     link: "https://maximum404.itch.io/medieval-tron-game",                           type: "itch", lang: "C#"     },
+            { name: "Asteroids Mobile",     desc: "Mobile style asteroid game",     link: "https://maximum404.itch.io/unity-asteroid-game-phone-style",              type: "itch", lang: "C#"     },
+            { name: "Ball Physics Sim",     desc: "Physics simulation prototype",   link: "https://maximum404.itch.io/ball-physics-simulation",                      type: "itch", lang: "C#"     },
+            { name: "Spiderman FP Demo",    desc: "First person tech demo",         link: "https://maximum404.itch.io/spiderman-first-person-tech-demo",              type: "itch", lang: "C#"     },
+            { name: "Car Sounds Script",    desc: "Vehicle audio system",           link: "https://maximum404.itch.io/car-sounds-script-unity3d",                    type: "itch", lang: "C#"     },
+            { name: "Custom Soundtrack",    desc: "Adaptive audio script",          link: "https://maximum404.itch.io/custom-game-soundtrack-script-unity",          type: "itch", lang: "C#"     },
+            // YouTube — names are fetched automatically from YouTube on load (fetchTitle: true)
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=mhhGGuwKETE", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=GNaZoKIkfoo", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=nJ7FsJMeHrM", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=YXXVwuKydjk", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=-ABFkNu9L_M", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=17zZcEqSQTU", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=5yqn0_A6fGA",  type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=sixYtZ147dI", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=UrN1a5W25dE", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=PCSz9ldRElQ", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=fD4be9JPszg", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=WlqMqx_-L7E", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=igye3ZeTuJc", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=dY-Q-A0fmXo", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=9HDFkNIsTKU", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=3JNFHh8f5jk", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=GlajfrSliGo", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=DZKIQcApi5A", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=9WtbRYtayJ8", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=kVhjdpKwh8Y", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=_OcYUgcQP0Q", type: "youtube", lang: "Video", fetchTitle: true },
+            { name: "Video Essay", desc: "Video essay", link: "https://www.youtube.com/watch?v=XTragXJDyik", type: "youtube", lang: "Video", fetchTitle: true },
+            // Rare — 10% chance per reroll
+            { name: "Video Essays", desc: "Rare archive playlist", link: "https://www.youtube.com/playlist?list=PLcCkjs6bbRxh-AjLmoLamFJm4wxMdL8JE", type: "youtube", lang: "Playlist", rare: true }
+        ];
+
+        let projectLibrary = [...baseLibrary];
+
+        async function fetchGitHubProjects() {
+            try {
+                const repos = await cachedJSON('https://api.github.com/users/Maximum404404/repos?per_page=100&sort=updated', 'mn_gh_repos', 3600000);
+                const knownLinks = new Set(projectLibrary.map(p => p.link.toLowerCase()));
+                repos.forEach(repo => {
+                    if (repo.fork) return;
+                    if (knownLinks.has(repo.html_url.toLowerCase())) return;
+                    projectLibrary.push({
+                        name: repo.name.replace(/-/g, ' '),
+                        desc: repo.description || 'GitHub repository',
+                        link: repo.html_url,
+                        type: 'github',
+                        lang: repo.language || 'N/A'
+                    });
+                });
+            } catch (e) {}
+        }
+
+        async function fetchVideoTitles() {
+            await Promise.all(
+                baseLibrary.filter(i => i.fetchTitle).map(async entry => {
+                    try {
+                        const cleanUrl = entry.link.split('&')[0];
+                        const data = await cachedJSON(`https://www.youtube.com/oembed?url=${encodeURIComponent(cleanUrl)}&format=json`, 'mn_yt_' + cleanUrl, 86400000);
+                        if (data && data.title) entry.name = data.title;
+                    } catch (e) {}
+                })
+            );
+        }
+
+        function renderSkeletons(deck, n) {
+            deck.innerHTML = '';
+            for (let i = 0; i < n; i++) {
+                const sk = document.createElement('div');
+                sk.className = 'skeleton-card';
+                deck.appendChild(sk);
+            }
+        }
+
+        async function init() {
+            renderSkeletons(document.getElementById('showcaseDeck'), 6);
+            await Promise.all([fetchGitHubProjects(), fetchVideoTitles()]);
+            generateRandomShowcase();
+        }
+
+        function generateRandomShowcase() {
+            document.getElementById('matrixSearch').value = '';
+
+            // Pick n items; if pool is smaller than n, repeats are allowed
+            const pick = (arr, n) => {
+                if (!arr.length) return [];
+                const pool = [...arr];
+                const out = [];
+                for (let i = 0; i < n; i++) {
+                    if (!pool.length) pool.push(...arr);
+                    out.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+                }
+                return out;
+            };
+
+            const githubPool = projectLibrary.filter(i => i.type === 'github');
+            const itchPool   = projectLibrary.filter(i => i.type === 'itch');
+            let   ytPool     = projectLibrary.filter(i => i.type === 'youtube' && !i.rare);
+            if (Math.random() < 0.10) ytPool.push(...projectLibrary.filter(i => i.type === 'youtube' && i.rare));
+
+            const gh = pick(githubPool, 2);
+            const it = pick(itchPool,   2);
+            const yt = pick(ytPool,     2);
+
+            // Interleave: GitHub | Itch | YouTube per row
+            const selection = [];
+            for (let i = 0; i < 2; i++) {
+                if (gh[i]) selection.push(gh[i]);
+                if (it[i]) selection.push(it[i]);
+                if (yt[i]) selection.push(yt[i]);
+            }
+            renderCards(selection);
+        }
+
+        function renderCards(list) {
+            const deck = document.getElementById('showcaseDeck');
+            deck.innerHTML = '';
+            if (!list.length) {
+                deck.innerHTML = '<p style="color:#888;margin:20px 0;">No matches found in pool.</p>';
+                return;
+            }
+            list.forEach(i => {
+                deck.innerHTML += `
+                    <div class="showcase-card card-link" onclick="if(event.target.tagName!=='A')this.querySelector('.showcase-link').click()">
+                        <span class="showcase-badge badge-${i.type}">${i.type.toUpperCase()}</span>
+                        <h3>${i.name}</h3><p>${i.desc}</p>
+                        <small>Lang: ${i.lang}</small>
+                        <a href="${i.link}" class="showcase-link" target="_blank">INITIALIZE ↗</a>
+                    </div>`;
+            });
+        }
+
+        function filterShowcaseResults() {
+            const q = document.getElementById('matrixSearch').value.toLowerCase().trim();
+            if (!q) { generateRandomShowcase(); return; }
+            renderCards(projectLibrary.filter(i =>
+                i.name.toLowerCase().includes(q) ||
+                i.desc.toLowerCase().includes(q) ||
+                i.lang.toLowerCase().includes(q)
+            ));
+        }
+
+        init();
+    </script>
 </body>
 </html>

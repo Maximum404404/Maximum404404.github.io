@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Vault | Max Norris</title>
+    <meta name="description" content="Software engineering projects and source repositories by Max Norris — IoT systems, automation tools and system architecture across Node.js, Java and Python.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Software Vault | Max Norris">
+    <meta property="og:description" content="Engineering projects, source code and technical tools.">
+    <meta property="og:image" content="https://maximum404404.github.io/prof.png">
+    <meta property="og:url" content="https://maximum404404.github.io/Software.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">Main Base Root</a>
+        <a href="Software.html">Software Vault</a>
+        <a href="Games.html">Games Vault</a>
+        <a href="Radio.html">Radio Stream</a>
+        <a href="Showreel.html">Video Showreel</a>
+        <a href="Feeds.html">Feeds</a>
+        <a href="Misc.html">Misc Projects</a>
+    </nav>
+
+    <div class="container">
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>Software Vault</h1>
+                <div class="subtitle">Engineering & System Architecture</div>
+            </div>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris profile photo" width="120" height="120">
+            </div>
+        </header>
+
+        <nav class="glass-panel interactive-nav">
+            <div class="nav-node"><a href="https://github.com/Maximum404404" target="_blank"><img src="git.png" alt="GitHub" width="55" height="55"></a><span class="tooltip">GitHub Code Architecture</span></div>
+            <div class="nav-node"><a href="https://maximum404.itch.io/" target="_blank"><img src="itch.png" alt="Itch.io" width="55" height="55"></a><span class="tooltip">Itch.io Experimental Prototypes</span></div>
+            <div class="nav-node"><a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank"><img src="yout.png" alt="YouTube" width="55" height="55"></a><span class="tooltip">YouTube Technical Video Showreels</span></div>
+            <div class="nav-node"><a href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank"><img src="link.png" alt="LinkedIn" width="55" height="55"></a><span class="tooltip">Professional LinkedIn Connect</span></div>
+        </nav>
+
+        <section class="glass-panel">
+            <h2>Repositories & Engineering Tools</h2>
+            <p>This vault contains the active software engineering projects, source code repositories, and technical engineering tools I have developed. It encompasses low-level system architecture through to high-level automation scripts.</p>
+            
+            <div class="showcase-deck">
+                <div class="showcase-card card-link" onclick="if(event.target.tagName!=='A')this.querySelector('.showcase-link').click()">
+                    <h3>Legacy Build</h3>
+                    <p>Previous iterations of the site architecture, preserved for structural reference and code history.</p>
+                    <a href="software_vault/Maximum404404.git (Legacy)/index.html" class="showcase-link">Launch Legacy ↗</a>
+                </div>
+                <div class="showcase-card card-link" onclick="if(event.target.tagName!=='A')this.querySelector('.showcase-link').click()">
+                    <h3>Smart Mirror Software</h3>
+                    <p>An IoT-based mirror interface utilizing React and Node.js for real-time weather, stock, and calendar data display.</p>
+                    <a href="software_vault/Smart-Mirror-Software-main/index.html" class="showcase-link">View Source ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="glass-panel">
+            <div class="audio-console">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)">
+                    <div class="audio-timeline-fill" id="trackFill"></div>
+                </div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
+    </div>
+
+</body>
+</html>

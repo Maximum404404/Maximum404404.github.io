@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMD // Command Deck | Max Norris</title>
+    <meta name="description" content="Command deck — drive the whole site from a terminal.">
+    <meta name="robots" content="noindex">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">Main Base Root</a>
+        <a href="Software.html">Software Vault</a>
+        <a href="Games.html">Games Vault</a>
+        <a href="Radio.html">Radio Stream</a>
+        <a href="Showreel.html">Video Showreel</a>
+        <a href="Feeds.html">Feeds</a>
+        <a href="Misc.html">Misc Projects</a>
+    </nav>
+
+    <div class="container">
+
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>Command Deck</h1>
+                <div class="subtitle">Type. Navigate. Operate.</div>
+            </div>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris profile photo" width="120" height="120">
+            </div>
+        </header>
+
+        <section class="glass-panel">
+            <h2>// Command Deck</h2>
+            <p style="color:#aaa;">A full terminal for the whole site. Type <code>help</code> to list commands, <code>ls</code> to see sections, or things like <code>open games</code>, <code>radio</code>, <code>about</code>, <code>game</code>.</p>
+            <div class="term-embed full" data-terminal></div>
+            <div class="cv-actions" style="margin-top:20px; justify-content:flex-start;">
+                <a href="index.html" class="btn-sec">↩ Return to Main Base Root</a>
+                <a href="classified.html" class="btn-sec">☣ Classified Vault</a>
+            </div>
+        </section>
+
+        <footer class="glass-panel">
+            <div class="audio-console">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)">
+                    <div class="audio-timeline-fill" id="trackFill"></div>
+                </div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Access | Max Norris</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- Uses your global CSS -->
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="index.html">⚡ Main Base Root</a>
+        <a href="software.html">📂 Software Vault</a>
+        <a href="games.html">🎮 Games Vault</a>
+        <a href="radio.html">📡 Media Showreel</a>
+        <a href="feeds.html">📊 Telemetry Log</a>
+        <a href="misc.html">☣ Experimental Nodes</a>
+    </nav>
+
+    <div class="container">
+        <!-- VAULT CONTENT START -->
+        <section class="glass-panel">
+            <h2>Category Name</h2>
+            <p>Description of this vault sector.</p>
+            
+            <div class="showcase-deck">
+                <!-- PROJECT CARD TEMPLATE -->
+                <div class="showcase-card">
+                    <h3>Project Name</h3>
+                    <p>Brief technical description.</p>
+                    <a href="vault_folder_name/project_name/index.html" class="showcase-link">Launch Project ↗</a>
+                </div>
+            </div>
+        </section>
+        <!-- VAULT CONTENT END -->
+    </div>
+
+    <script>
+        function toggleSidebarMenu() {
+            const drawer = document.getElementById('sidebarDrawer');
+            const hook = document.getElementById('drawerHook');
+            drawer.classList.toggle('active');
+            hook.textContent = drawer.classList.contains('active') ? "CLOSE" : "MENU";
+            hook.style.left = drawer.classList.contains('active') ? "340px" : "20px";
+        }
+    </script>
+</body>
+</html>

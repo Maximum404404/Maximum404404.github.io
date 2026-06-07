@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Norris | Essex Games Programmer Portfolio</title>
+    
+    <!-- Tech Font Stack -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glow-color: rgba(255, 255, 255, 0.3);
+            --panel-bg: rgba(0, 0, 0, 0.75);
+            --border-style: 1px solid rgba(255, 255, 255, 0.15);
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: url('BG.jpg') no-repeat center center;
+            background-size: contain;
+            background-attachment: fixed;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Ambient Tiled Rain Overlay */
+        .rain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('rain.gif');
+            background-repeat: repeat;
+            background-size: 400px;
+            opacity: 0.20;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Fixed Navigation Slide-Out Drawer Button Trigger */
+        .sidebar-trigger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 10px 18px;
+            font-family: var(--font-display);
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .sidebar-trigger:hover {
+            border-color: #fff;
+            box-shadow: 0 0 15px var(--glow-color);
+            transform: translateX(3px);
+        }
+
+        /* Left Side Sliding Navigation Drawer Link Structure */
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            padding: 90px 24px 30px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 20px 0 40px rgba(0,0,0,0.8);
+        }
+
+        .sidebar-drawer.active {
+            left: 0;
+        }
+
+        .sidebar-drawer h4 {
+            font-family: var(--font-display);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            padding-left: 10px;
+        }
+
+        .sidebar-drawer a {
+            font-family: var(--font-display);
+            color: #bbb;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.01);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-drawer a.home-node {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        
+        .sidebar-drawer a.home-node:hover {
+            border-color: #fff;
+            box-shadow: 0 0 12px var(--glow-color);
+        }
+
+        /* Global Layout Container */
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Structural Cards */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: var(--border-style);
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Header Grid Split */
+        .header-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            text-align: center;
+        }
+
+        .clock {
+            font-family: var(--font-display);
+            font-size: 16px;
+            text-align: left;
+            letter-spacing: 2px;
+            color: #aaa;
+        }
+
+        /* Refined Header Titles */
+        .brand-titles h1 {
+            font-family: var(--font-display);
+            font-size: 38px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .brand-titles .subtitle {
+            font-size: 13px;
+            letter-spacing: 5px;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .profile-box {
+            text-align: right;
+        }
+
+        .profile-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: var(--border-style);
+            object-fit: cover;
+        }
+
+        /* Micro-Interaction Nav Area */
+        .interactive-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .nav-node {
+            position: relative;
+            display: inline-block;
+        }
+
+        .interactive-nav img {
+            width: 55px;
+            height: 55px;
+            border: var(--border-style);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .interactive-nav img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            border-color: #fff;
+        }
+
+        /* Interactive Tooltips */
+        .nav-node .tooltip {
+            visibility: hidden;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 6px 12px;
+            border: var(--border-style);
+            position: absolute;
+            z-index: 10;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            white-space: nowrap;
+            font-family: var(--font-display);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-node:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            border-bottom: var(--border-style);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        p {
+            text-align: left;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        /* Pinned Project Layout Panel */
+        .pinned-panel-wrapper {
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+        .pinned-flex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .pinned-action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* Matrix Search Bar Styles */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 25px auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: var(--border-style);
+            padding: 12px 20px;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 14px;
+            border-radius: 4px;
+            text-align: center;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 10px var(--glow-color);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* 3-Card Project Showcase Carousel Grid Styles */
+        .showcase-deck {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .showcase-card {
+            border: var(--border-style);
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 230px;
+            animation: cardFadeIn 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .showcase-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .showcase-badge {
+            font-family: var(--font-display);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 2px;
+            letter-spacing: 1px;
+        }
+
+        .lang-tag {
+            font-family: var(--font-display);
+            font-size: 10px;
+            color: #aaa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge-github { background: #24292e; border: 1px solid #666; color: #fff; }
+        .badge-itch { background: #fa5c5c; border: 1px solid #ff8888; color: #fff; }
+        .badge-youtube { background: #ff0000; border: 1px solid #ff5555; color: #fff; }
+        .badge-pinned { background: #000; border: 1px solid #fff; color: #fff; }
+
+        .showcase-card h3 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .showcase-card p {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .showcase-link {
+            font-family: var(--font-display);
+            font-size: 11px;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .showcase-link:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .reroll-btn {
+            background: transparent;
+            border: var(--border-style);
+            color: #fff;
+            padding: 10px 20px;
+            font-family: var(--font-display);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reroll-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #fff;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        /* Side-by-Side Dual Action Resume Matrix Buttons */
+        .cv-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-prime {
+            background: #fff;
+            color: #000;
+            padding: 12px 24px;
+            font-family: var(--font-display);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #fff;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        .btn-prime:hover {
+            background: #000;
+            color: #fff;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+        .btn-sec {
+            background: transparent;
+            color: #fff;
+            padding: 12px 24px;
+            font-family: var(--font-display);
+            text-decoration: none;
+            border: var(--border-style);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        .btn-sec:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #fff;
+        }
+
+        /* Spam-Protected Contact Messaging Grid */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 600px;
+            margin: 15px auto 0 auto;
+        }
+        .contact-form input, .contact-form textarea {
+            background: rgba(0,0,0,0.5);
+            border: var(--border-style);
+            padding: 12px;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 14px;
+            border-radius: 2px;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 8px var(--glow-color);
+        }
+        .contact-form button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 12px;
+            font-family: var(--font-display);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .contact-form button:hover { background: #ccc; }
+
+        /* Integrated LinkedIn Fallback Graphic Connection Module */
+        .linkedin-fallback-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 119, 181, 0.05) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 1px solid rgba(0, 119, 181, 0.3);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .linkedin-fallback-card:hover {
+            border-color: rgba(0, 119, 181, 0.7);
+            box-shadow: 0 0 20px rgba(0, 119, 181, 0.2);
+            background: linear-gradient(135deg, rgba(0, 119, 181, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+        }
+        .linkedin-icon-graphic {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 8px rgba(0, 119, 181, 0.4));
+        }
+        .linkedin-fallback-card p {
+            text-align: center;
+            max-width: 550px;
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .linkedin-connect-btn {
+            font-family: var(--font-display);
+            background: transparent;
+            color: #0077b5;
+            border: 1px solid #0077b5;
+            padding: 10px 24px;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .linkedin-connect-btn:hover {
+            background: #0077b5;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 119, 181, 0.4);
+        }
+
+        /* Communications Directory */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .contact-node h4 {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .contact-node a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.4);
+            transition: border-color 0.2s;
+        }
+
+        .contact-node a:hover {
+            border-bottom-color: #fff;
+        }
+
+        /* Minimalist Custom-Styled Audio Console */
+        .audio-console {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 400px;
+            margin: 20px auto 0 auto;
+        }
+
+        .audio-playback-btn {
+            background: transparent;
+            border: var(--border-style);
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .audio-playback-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #fff;
+        }
+
+        .audio-timeline-rail {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .audio-timeline-fill {
+            width: 0%;
+            height: 100%;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .clock { text-align: center; }
+            .profile-box { text-align: center; }
+            .interactive-nav { flex-wrap: wrap; gap: 15px; }
+            .cv-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="rain-overlay"></div>
+
+    <!-- Slide-Out Sidebar Pull Navigation Drawer Container -->
+    <button class="sidebar-trigger" id="drawerHook" onclick="toggleSidebarMenu()">MENU</button>
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <h4>System Matrix</h4>
+        <a href="#" class="home-node" onclick="toggleSidebarMenu()">⚡ Main Base Root<span>↵</span></a>
+    </nav>
+
+    <div class="container">
+        
+        <!-- Header Information Area -->
+        <header class="glass-panel header-grid">
+            <div class="clock" id="liveClock">00:00:00</div>
+            <div class="brand-titles">
+                <h1>Max Norris</h1>
+                <div class="subtitle">Games Programmer & Developer</div>
+            </div>
+            <div class="profile-box">
+                <img src="prof.png" alt="Max Norris Profile Image">
+            </div>
+        </header>
+
+        <!-- Main Link Nav Nodes -->
+        <nav class="glass-panel interactive-nav">
+            <div class="nav-node">
+                <a href="https://github.com/Maximum404404" target="_blank"><img src="git.png" alt="GitHub"></a>
+                <span class="tooltip">GitHub Code Architecture</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://maximum404.itch.io/" target="_blank"><img src="itch.png" alt="Itch.io"></a>
+                <span class="tooltip">Itch.io Experimental Prototypes</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank"><img src="yout.png" alt="YouTube"></a>
+                <span class="tooltip">YouTube Technical Video Showreels</span>
+            </div>
+            <div class="nav-node">
+                <a href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank"><img src="link.png" alt="LinkedIn"></a>
+                <span class="tooltip">Professional LinkedIn Connect</span>
+            </div>
+        </nav>
+
+        <!-- Executive Biography Info Box -->
+        <section class="glass-panel">
+            <h2>Executive Background Profile</h2>
+            <p>A technically proficient BSc (Hons) Computer Games (And Programming) graduate (2:1) from the University of Essex, combining sharp gameplay system architecture capabilities with valuable professional experience in high-pressure operational environments[cite: 3]. Adept at managing real-time data accuracy, system navigation, and technical problem-solving under tight deadlines, as demonstrated through department placements within the NHS and structured logistics tracking at Royal Mail[cite: 3]. Meticulous focus and proactive fault diagnosis drive an engineering mindset specialized in producing seamless, high-performance gameplay controllers and automated computational systems[cite: 3].</p>
+            
+            <!-- CV Action Hub Links -->
+            <div class="cv-actions">
+                <a href="Max_Norris_CV_2026 V3.pdf" target="_blank" class="btn-prime">View CV Document</a>
+                <a href="Max_Norris_CV_2026 V3.pdf" download="Max_Norris_CV_2026_V3.pdf" class="btn-sec">Download CV (PDF)</a>
+            </div>
+        </section>
+
+        <!-- Isolated Permanent Pinned Capstone Project Layout Box -->
+        <section class="glass-panel pinned-panel-wrapper">
+            <div class="pinned-flex-header">
+                <h2>📌 Pinned Capstone Engineering Project</h2>
+                <span class="lang-tag" style="color: #fff; font-weight: bold; border: 1px solid #fff; padding: 2px 6px;">Python / API</span>
+            </div>
+            <h3>REALTIME AI TWITCH CHAT FOR SMALL STREAMERS</h3>
+            <p style="margin-top: 10px;">Engineered a complex, real-time data processing system using Python and third-party APIs to monitor live audio/visual inputs and ensure the system generated accurate, contextually relevant automated responses[cite: 3]. Built to process fast-moving data streams efficiently and optimize interaction layers under active deployment conditions[cite: 3].</p>
+            <div class="pinned-action-row">
+                <span class="lang-tag">Infrastructure Automation & Data Integrity</span>
+                <a href="https://github.com/Maximum404404/Realtime-AI-Twitch-Chat-For-Small-Streamers" target="_blank" class="showcase-link">Access Repository System ↗</a>
+            </div>
+        </section>
+
+        <!-- Dynamic Project Randomizer Showcase Array Box with Search Filter -->
+        <section class="glass-panel" style="text-align: center;">
+            <h2>Project Pool Matrix Carousel</h2>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" id="matrixSearch" placeholder="FILTER POOL BY LANGUAGE, KEYWORD, OR ASSIGNED TAG..." oninput="filterShowcaseResults()">
+            </div>
+
+            <div class="showcase-deck" id="showcaseDeck">
+                <!-- JavaScript automatically maps and populates the 3 random cards here -->
+            </div>
+            <div class="carousel-controls">
+                <button class="reroll-btn" id="rerollBtn" onclick="generateRandomShowcase()">Reroll Showcase Selection</button>
+            </div>
+        </section>
+
+        <!-- LinkedIn Fallback Graphic Connection Module -->
+        <section class="glass-panel">
+            <h2>Professional Network Feed</h2>
+            <div class="linkedin-fallback-card">
+                <img class="linkedin-icon-graphic" src="link.png" alt="LinkedIn Platform Icon">
+                <p>Industry field updates, professional network telemetry, and real-time career dispatches are synced to my primary verified identity node[cite: 3]. Let's trace systems connections together.</p>
+                <a class="linkedin-connect-btn" href="https://www.linkedin.com/in/max-norris-8239332a4/" target="_blank">Establish Connection Hub ↗</a>
+            </div>
+        </section>
+
+        <!-- Secure Formspree Transmission Form -->
+        <section class="glass-panel">
+            <h2>Secure Transmission Matrix</h2>
+            <p style="text-align: center; margin-bottom: 15px; color: #aaa;">Submit communications requests directly to the core development inbox below.</p>
+            <form class="contact-form" action="https://formspree.io/f/mzdwogwv" method="POST">
+                <input type="text" name="name" placeholder="Sender Name / Corporate Unit" required>
+                <input type="email" name="_replyto" placeholder="Return Correspondence Address" required>
+                <textarea name="message" rows="5" placeholder="Write message body content rules here..." required></textarea>
+                <button type="submit">Deploy Transmission</button>
+            </form>
+        </section>
+
+        <!-- Communications Directory -->
+        <section class="glass-panel">
+            <h2>Communication Matrix</h2>
+            <div class="contact-grid">
+                <div class="contact-node">
+                    <h4>Direct Secure Email</h4>
+                    <p><a href="mailto:G4mes.portfo@gmail.com">G4mes.portfo@gmail.com</a></p>
+                </div>
+                <div class="contact-node">
+                    <h4>Voice Communications Line</h4>
+                    <!-- FIXED: Modified visual layout text per target string matching parameters -->
+                    <p>(available upon request)</p>
+                </div>
+                <div class="contact-node">
+                    <h4>Discord Handling Node</h4>
+                    <p>maximum404</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Audio Player Console -->
+        <footer class="glass-panel">
+            <div class="custom-audio">
+                <button class="audio-playback-btn" id="playBtn" onclick="controlAudio()">▶</button>
+                <div class="audio-timeline-rail" id="trackBar" onclick="navigateAudio(event)">
+                    <div class="audio-timeline-fill" id="trackFill"></div>
+                </div>
+            </div>
+            <audio id="audioSource" src="portal.mp3" preload="auto"></audio>
+        </footer>
+
+    </div>
+
+    <script>
+        function triggerClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = 
+                now.getHours().toString().padStart(2, '0') + ":" + 
+                now.getMinutes().toString().padStart(2, '0') + ":" + 
+                now.getSeconds().toString().padStart(2, '0');
+        }
+        setInterval(triggerClock, 1000);
+        triggerClock();
+
+        /* Sidebar Drawer Interaction Controller */
+        function toggleSidebarMenu() {
+            const drawer = document.getElementById('sidebarDrawer');
+            const hook = document.getElementById('drawerHook');
+            drawer.classList.toggle('active');
+            
+            if (drawer.classList.contains('active')) {
+                hook.textContent = "CLOSE";
+                hook.style.left = "340px";
+            } else {
+                hook.textContent = "MENU";
+                hook.style.left = "20px";
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const drawer = document.getElementById('sidebarDrawer');
+            const hook = document.getElementById('drawerHook');
+            if (!drawer.contains(event.target) && event.target !== hook && drawer.classList.contains('active')) {
+                toggleSidebarMenu();
+            }
+        });
+
+        /* Master Static Metadata Arrays */
+        const staticItchProjects = [
+            { name: "Tempo of the Fist: Neon Bloodline", desc: "A rhythm-based 2.5D fighting system built around tight audio calibration clocks.", link: "https://maximum404.itch.io/", type: "itch", lang: "C# / Unity" },
+            { name: "HTML5 Retro Arcade Framework", desc: "Lightweight browser engine executing arcade-style state logic patterns.", link: "https://maximum404.itch.io/", type: "itch", lang: "JavaScript" }
+        ];
+
+        const staticYoutubeVideos = [
+            { name: "Forza Motorsport Analytical Essay", desc: "Deep technical breakdown evaluating tyre slip simulation models and telemetry mapping.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "Premiere Pro" },
+            { name: "Gameplay System Architecture Overview", desc: "Video breakdown showcasing clean modular controller architectures and AI state machines.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "C++ / Engine" },
+            { name: "Automated Video Pipeline Demonstration", desc: "A screen-capture proof demonstrating custom tools reading structured video parameters.", link: "https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw", type: "youtube", lang: "Python Automation" }
+        ];
+
+        let globalMasterPool = [];
+        let currentSelection = [];
+
+        async function generateRandomShowcase() {
+            const deck = document.getElementById('showcaseDeck');
+            document.getElementById('matrixSearch').value = '';
+            document.getElementById('rerollBtn').style.display = 'inline-block';
+            deck.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Querying environment pools...</p>';
+            
+            let fetchPool = [];
+
+            try {
+                const response = await fetch('https://api.github.com/users/Maximum404404/repos?sort=updated');
+                if (response.ok) {
+                    const repos = await response.json();
+                    repos.forEach(repo => {
+                        if(repo.name !== 'Realtime-AI-Twitch-Chat-For-Small-Streamers') {
+                            fetchPool.push({
+                                name: repo.name.replace(/-/g, ' ').toUpperCase(),
+                                desc: repo.description || "Source code repository containing structural architectures and algorithmic systems.",
+                                link: repo.html_url,
+                                type: "github",
+                                lang: repo.language || "C++"
+                            });
+                        }
+                    });
+                }
+            } catch (err) {
+                console.warn("GitHub live feed fallback active.");
+            }
+
+            globalMasterPool = [
+                ...fetchPool,
+                ...staticItchProjects,
+                ...staticYoutubeVideos
+            ];
+
+            const randomItems = [];
+            const poolClone = [...globalMasterPool];
+            const limit = Math.min(3, poolClone.length);
+            
+            for (let i = 0; i < limit; i++) {
+                const randomIdx = Math.floor(Math.random() * poolClone.length);
+                randomItems.push(poolClone.splice(randomIdx, 1)[0]);
+            }
+
+            currentSelection = [...randomItems];
+            renderCards(currentSelection);
+        }
+
+        function filterShowcaseResults() {
+            const query = document.getElementById('matrixSearch').value.toLowerCase().trim();
+            const rerollBtn = document.getElementById('rerollBtn');
+
+            if (query === '') {
+                rerollBtn.style.display = 'inline-block';
+                renderCards(currentSelection);
+                return;
+            }
+
+            rerollBtn.style.display = 'none';
+
+            const filtered = globalMasterPool.filter(item => {
+                const matchName = item.name.toLowerCase().includes(query);
+                const matchDesc = item.desc.toLowerCase().includes(query);
+                const matchType = item.type.toLowerCase().includes(query);
+                const matchLang = item.lang.toLowerCase().includes(query);
+                return matchName || matchDesc || matchType || matchLang;
+            });
+
+            renderCards(filtered, true);
+        }
+
+        function renderCards(itemsList, isSearchActive = false) {
+            const deck = document.getElementById('showcaseDeck');
+            if (itemsList.length === 0) {
+                deck.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #aaa;">No matrix elements found matching that query parameter.</p>';
+                return;
+            }
+
+            deck.innerHTML = '';
+            itemsList.forEach((item, index) => {
+                let badgeClass = `badge-${item.type}`;
+                let badgeText = item.type === 'github' ? 'GitHub Repo' : item.type === 'itch' ? 'Itch.io Game' : 'YouTube Video';
+                
+                deck.innerHTML += `
+                    <div class="showcase-card" style="animation-delay: ${isSearchActive ? 0 : index * 0.12}s;">
+                        <div>
+                            <div class="showcase-meta-row">
+                                <span class="showcase-badge ${badgeClass}">${badgeText}</span>
+                                <span class="lang-tag">${item.lang}</span>
+                            </div>
+                            <h3>${item.name}</h3>
+                            <p>${item.desc}</p>
+                        </div>
+                        <a href="${item.link}" target="_blank" class="showcase-link">Initialize Source ↗</a>
+                    </div>
+                `;
+            });
+        }
+
+        generateRandomShowcase();
+
+        /* Audio Logic Subsystem */
+        const sound = document.getElementById('audioSource');
+        const playBtn = document.getElementById('playBtn');
+        const trackFill = document.getElementById('trackFill');
+        const trackBar = document.getElementById('trackBar');
+
+        function controlAudio() {
+            if (sound.paused) {
+                sound.play();
+                playBtn.textContent = "‖";
+            } else {
+                sound.pause();
+                playBtn.textContent = "▶";
+            }
+        }
+
+        sound.addEventListener('timeupdate', () => {
+            const currentPercentage = (sound.currentTime / sound.duration) * 100;
+            trackFill.style.width = currentPercentage + '%';
+        });
+
+        function navigateAudio(e) {
+            const totalWidth = trackBar.clientWidth;
+            const clickPositionX = e.offsetX;
+            sound.currentTime = (clickPositionX / totalWidth) * sound.duration;
+        }
+    </script>
+</body>
+</html>

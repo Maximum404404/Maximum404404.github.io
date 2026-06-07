@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Dash: Ultimate Edition</title>
+    
+    <!-- Import Sci-Fi Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           GLOBAL RESET & BASE STYLES
+           ========================================================================== */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #050011; 
+            font-family: 'Orbitron', sans-serif; 
+            color: #fff; 
+            transition: background-color 0.5s ease; 
+            user-select: none; 
+        }
+        
+        canvas { 
+            display: block; 
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* ==========================================================================
+           UI LAYER & OVERLAYS
+           ========================================================================== */
+        .ui-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            z-index: 20; 
+            background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); 
+            transition: opacity 0.3s ease; 
+        }
+        
+        .hidden { 
+            display: none !important; 
+        }
+        
+        /* ==========================================================================
+           PANEL & CONTAINERS
+           ========================================================================== */
+        .panel { 
+            background: rgba(5, 0, 15, 0.95); 
+            border: 2px solid #0ff; 
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.2); 
+            padding: 40px; 
+            border-radius: 15px; 
+            pointer-events: auto; 
+            max-width: 800px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            transition: all 0.5s ease;
+        }
+        
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+            text-align: left; 
+        }
+        
+        .box { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 20px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(0,255,255,0.3); 
+            font-size: 14px; 
+            line-height: 1.8; 
+            transition: all 0.3s ease;
+        }
+        
+        .box span { 
+            color: #0ff; 
+            font-weight: bold; 
+        }
+        
+        /* ==========================================================================
+           TYPOGRAPHY
+           ========================================================================== */
+        h1 { 
+            color: #fff; 
+            text-shadow: 0 0 15px #0ff, 0 0 30px #0ff; 
+            font-size: 52px; 
+            margin: 0; 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+        
+        h2 { 
+            margin: 0 0 15px 0; 
+            font-size: 20px; 
+            color: #0ff; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            border-bottom: 1px solid #0ff; 
+            padding-bottom: 5px;
+            transition: color 0.5s ease, border-color 0.5s ease;
+        }
+        
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        /* ==========================================================================
+           FORM ELEMENTS (Native & Reliable)
+           ========================================================================== */
+        .setting-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px; 
+        }
+        
+        input[type="number"], 
+        input[type="text"], 
+        select { 
+            background: #000; 
+            color: #0ff; 
+            border: 1px solid #0ff; 
+            padding: 8px; 
+            font-size: 14px; 
+            text-align: center; 
+            font-family: inherit; 
+            border-radius: 4px; 
+            outline: none; 
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"] { 
+            width: 120px; 
+            text-transform: uppercase; 
+        }
+        
+        input[type="number"] { 
+            width: 70px; 
+        }
+        
+        select { 
+            cursor: pointer; 
+            width: 140px; 
+        }
+        
+        /* Native Checkboxes (Scaled up for visibility, guaranteed to work) */
+        .toggle-label { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            color: #fff;
+        }
+        
+        input[type="checkbox"] { 
+            width: 20px; 
+            height: 20px; 
+            cursor: pointer; 
+            accent-color: #0ff;
+        }
+        
+        /* Native File Upload */
+        input[type="file"] { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 5px; 
+            border: 1px dashed #0ff; 
+            background: rgba(0, 255, 255, 0.05); 
+            color: #0ff; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            transition: background 0.3s; 
+            box-sizing: border-box; 
+        }
+
+        input[type="file"]::file-selector-button { 
+            border: 1px solid #0ff; 
+            background: #000; 
+            color: #0ff; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-family: inherit; 
+            margin-right: 15px; 
+            font-weight: bold; 
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover { 
+            background: rgba(0, 255, 255, 0.15); 
+        }
+        
+        /* ==========================================================================
+           BUTTONS
+           ========================================================================== */
+        button { 
+            background: transparent; 
+            color: #0ff; 
+            border: 2px solid #0ff; 
+            padding: 15px 30px; 
+            font-size: 22px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            font-family: inherit; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+            border-radius: 8px; 
+            box-shadow: 0 0 10px rgba(0,255,255,0.2); 
+            margin-top: 10px;
+        }
+        
+        button:hover { 
+            background: #0ff; 
+            color: #000; 
+            box-shadow: 0 0 20px #0ff; 
+            transform: scale(1.05); 
+        }
+
+        /* ==========================================================================
+           HEADS UP DISPLAY (HUD)
+           ========================================================================== */
+        #hud-container { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            pointer-events: none; 
+            z-index: 10; 
+        }
+        
+        #progress-bar-bg { 
+            width: 100%; 
+            height: 8px; 
+            background: rgba(255,255,255,0.1); 
+        }
+        
+        #progress-bar-fill { 
+            width: 0%; 
+            height: 100%; 
+            background: #0ff; 
+            box-shadow: 0 0 10px #0ff; 
+            transition: width 0.1s linear, background 0.5s ease; 
+        }
+        
+        #hud { 
+            padding: 15px 25px; 
+            font-size: 18px; 
+            color: #fff; 
+            text-shadow: 0 0 5px #000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        
+        .hud-group { 
+            display: flex; 
+            gap: 30px; 
+            align-items: center;
+        }
+        
+        .hud-value { 
+            font-weight: bold; 
+            text-shadow: 0 0 5px #0ff; 
+            font-size: 20px;
+        }
+        
+        /* ==========================================================================
+           SCREEN EFFECTS
+           ========================================================================== */
+        #flashbang { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #fff; 
+            pointer-events: none; 
+            z-index: 15; 
+            opacity: 0; 
+            transition: opacity 0.5s ease-out; 
+        }
+        
+        #fog { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            z-index: 5; 
+            background: radial-gradient(circle, transparent 15%, rgba(0,0,0,0.98) 75%); 
+            opacity: 0; 
+            transition: opacity 1s ease; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN FX -->
+    <div id="flashbang"></div>
+    <div id="fog"></div>
+
+    <!-- MAIN GAME RENDERER -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- IN-GAME HUD -->
+    <div id="hud-container">
+        <div id="progress-bar-bg">
+            <div id="progress-bar-fill"></div>
+        </div>
+        <div id="hud">
+            <div class="hud-group">
+                <span>SCORE: <span id="hudScore" class="hud-value">0</span></span>
+                <span style="color:#00ffcc">COMBO: <span id="hudCombo" class="hud-value">x1</span></span>
+                <span style="color:#ffea00">KEYS: <span id="hudKeys" class="hud-value">0</span></span>
+                <span>DIST: <span id="hudDist" class="hud-value">0</span>m</span>
+            </div>
+            <div class="hud-group">
+                <span>MODE: <span id="hudMode" class="hud-value" style="color:#ff00ff">CUBE</span></span>
+                <span>SPEED: <span id="hudSpeed" class="hud-value">1.0</span>x</span>
+                <span>TIME: <span id="hudTime" class="hud-value">00:00.00</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- START MENU -->
+    <div id="startScreen" class="ui-layer">
+        <div class="panel" id="uiPanel">
+            <h1 id="uiTitle">CYBER DASH: ULTRA</h1>
+            
+            <div class="menu-grid">
+                <!-- Instructions -->
+                <div class="box controls-box">
+                    <h2 id="uiSub1">HOW TO PLAY</h2>
+                    <span>[CLICK / SPACE / W]</span> Jump / Flap / Orbs<br><br>
+                    <span>[HOLD CLICK]</span> Fly (Ship / Wave Mode)<br><br>
+                    <span>[R-CLICK]</span> Grapple Yellow Rings<br><br>
+                    <span>[SHIFT]</span> Phase Dash (Break Glass)<br><br>
+                    <span>[C]</span> Drop Practice Checkpoint<br><br>
+                    <span>[R]</span> Quick Respawn | <span>[M]</span> Pause
+                </div>
+                
+                <!-- Settings -->
+                <div class="box settings-box">
+                    <h2 id="uiSub2">RUN SETTINGS</h2>
+                    
+                    <div class="setting-item">
+                        <label>Difficulty:</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                            <option value="mega">Mega Hard (Fog)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Seed ID:</label>
+                        <input type="text" id="levelIdInput" placeholder="RANDOM" maxlength="8">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Music BPM:</label>
+                        <input type="number" id="bpmInput" value="130" min="60" max="300">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="toggle-label" for="checkpointsToggle">
+                            <input type="checkbox" id="checkpointsToggle" checked> Checkpoints
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label class="toggle-label" for="shakeToggle">
+                            <input type="checkbox" id="shakeToggle" checked> Screen Shake
+                        </label>
+                    </div>
+                    
+                    <!-- MP3 Uploader (Fixed native input) -->
+                    <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                        <label style="color: #0ff; font-weight: bold; text-transform: uppercase;" id="uiAudioLabel">
+                            Sync Track (MP3/WAV):
+                        </label>
+                        <input type="file" id="audioUpload" accept="audio/*">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="startBtn">INITIALIZE RUN</button>
+        </div>
+    </div>
+
+    <!-- PAUSE MENU -->
+    <div id="pauseScreen" class="ui-layer hidden">
+        <div class="panel">
+            <h1 style="color: #00aaff; text-shadow: 0 0 20px #00aaff;">SYSTEM PAUSED</h1>
+            <button id="resumeBtn">RESUME [M]</button>
+            <button id="quitBtn">ABORT RUN</button>
+        </div>
+    </div>
+
+    <!-- GAME OVER MENU -->
+    <div id="gameOverScreen" class="ui-layer hidden">
+        <div class="panel">
+            <h1 style="color: #ff0055; text-shadow: 0 0 20px #ff0055;">CRASHED</h1>
+            <p id="deathReason">You hit an obstacle.</p>
+            <button id="respawnBtn">REBOOT [R]</button>
+            <button id="restartBtn">MAIN MENU</button>
+        </div>
+    </div>
+
+    <!-- VICTORY MENU -->
+    <div id="victoryScreen" class="ui-layer hidden">
+        <div class="panel">
+            <h1 style="color: #00ffcc; text-shadow: 0 0 20px #00ffcc;">TRACK COMPLETE</h1>
+            <p>You survived the track.</p>
+            <p>Total Time: <span id="victoryTime">00:00.00</span></p>
+            <button id="victoryRestartBtn">PLAY AGAIN</button>
+        </div>
+    </div>
+
+<script>
+/**
+ * ============================================================================
+ * GLOBAL UTILITIES & CORE FUNCTIONS
+ * ============================================================================
+ * Defining these at the very top prevents ReferenceErrors when they are 
+ * called by lower-level systems or event listeners.
+ */
+
+// Visual FX Globals
+const flashbang = document.getElementById('flashbang');
+let currentSpikeColor = '#ff0055'; 
+
+// Trigger white flash on screen safely
+window.triggerFlashbang = function() {
+    flashbang.style.opacity = '1';
+    
+    setTimeout(function() {
+        flashbang.style.opacity = '0';
+    }, 80);
+};
+
+// PRNG (Pseudo-Random Number Generator) state
+let currentSeed = 0; 
+let checkpointSeed = 0; 
+
+// Hash a string into an integer seed
+window.hashString = function(str) { 
+    let hash = 0; 
+    for(let i = 0; i < str.length; i++) {
+        let charCode = str.charCodeAt(i);
+        hash = Math.imul(31, hash) + charCode | 0; 
+    }
+    return Math.abs(hash); 
+};
+
+// Generate deterministic random numbers (0.0 to 1.0)
+window.seededRandom = function() { 
+    let t = currentSeed += 0x6D2B79F5; 
+    t = Math.imul(t ^ t >>> 15, t | 1); 
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61); 
+    return ((t ^ t >>> 14) >>> 0) / 4294967296; 
+};
+
+
+/**
+ * ============================================================================
+ * ENGINE SETUP & DOM SELECTION
+ * ============================================================================
+ */
+const canvas = document.getElementById('gameCanvas'); 
+const ctx = canvas.getContext('2d');
+
+let cw;
+let ch; 
+
+// Handle Screen Resizing dynamically
+function resize() { 
+    cw = canvas.width = window.innerWidth; 
+    ch = canvas.height = window.innerHeight; 
+}
+window.addEventListener('resize', resize); 
+resize();
+
+// Prevent context menu on right click for grappling mechanics
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Extract UI Elements for easy management
+const uiStart = document.getElementById('startScreen');
+const uiPause = document.getElementById('pauseScreen');
+const uiGameOver = document.getElementById('gameOverScreen');
+const uiVictory = document.getElementById('victoryScreen');
+
+const deathReasonTxt = document.getElementById('deathReason');
+const victoryTimeTxt = document.getElementById('victoryTime');
+
+// Extract HUD Elements
+const hudScore = document.getElementById('hudScore');
+const hudCombo = document.getElementById('hudCombo');
+const hudMode = document.getElementById('hudMode');
+const hudTime = document.getElementById('hudTime');
+const hudKeys = document.getElementById('hudKeys');
+const hudDist = document.getElementById('hudDist');
+const hudSpeed = document.getElementById('hudSpeed');
+const progressBarFill = document.getElementById('progress-bar-fill');
+
+// Extract Form Inputs
+const bpmInput = document.getElementById('bpmInput');
+const levelIdInput = document.getElementById('levelIdInput');
+const difficultySelect = document.getElementById('difficultySelect');
+const shakeToggle = document.getElementById('shakeToggle');
+const checkpointsToggle = document.getElementById('checkpointsToggle');
+const audioUpload = document.getElementById('audioUpload');
+const fogLayer = document.getElementById('fog');
+
+
+/**
+ * ============================================================================
+ * UI STATE MANAGER
+ * ============================================================================
+ * Ensures that menus never overlap each other by strictly managing visibility.
+ */
+function showMenu(menuId) {
+    // 1. Hide all menus completely
+    uiStart.classList.add('hidden');
+    uiPause.classList.add('hidden');
+    uiGameOver.classList.add('hidden');
+    uiVictory.classList.add('hidden');
+    
+    // 2. Show requested menu
+    if (menuId) {
+        document.getElementById(menuId).classList.remove('hidden');
+    }
+}
+
+
+/**
+ * ============================================================================
+ * THEME & COLOR MANAGEMENT
+ * ============================================================================
+ */
+const themes = [
+    { bgTop: '#0b001a', bgBot: '#2a005c', primary: '#00ffcc', secondary: '#a200ff', ground: '#110022' }, 
+    { bgTop: '#1a0000', bgBot: '#5c0000', primary: '#ffaa00', secondary: '#ff0055', ground: '#220000' }, 
+    { bgTop: '#001a0a', bgBot: '#005c22', primary: '#ccff00', secondary: '#00ffaa', ground: '#002211' },
+    { bgTop: '#1a0a00', bgBot: '#5c2200', primary: '#ff5500', secondary: '#ffaa00', ground: '#221100' },
+    { bgTop: '#000000', bgBot: '#222222', primary: '#ffffff', secondary: '#888888', ground: '#111111' }
+];
+
+let currentTheme = themes[0]; 
+
+function cycleTheme() {
+    window.triggerFlashbang();
+    
+    // Pick a random theme
+    let randomIndex = Math.floor(Math.random() * themes.length);
+    currentTheme = themes[randomIndex];
+    
+    // Generate a random complementary spike color
+    let randomHue = Math.floor(Math.random() * 360);
+    currentSpikeColor = `hsl(${randomHue}, 100%, 60%)`;
+    
+    // Update the UI panel colors dynamically
+    document.getElementById('uiPanel').style.borderColor = currentTheme.primary;
+    document.getElementById('uiPanel').style.boxShadow = `0 0 30px ${currentTheme.primary}66, inset 0 0 20px ${currentTheme.primary}33`;
+    
+    document.getElementById('uiTitle').style.color = currentTheme.primary;
+    document.getElementById('uiTitle').style.textShadow = `0 0 15px ${currentTheme.primary}, 0 0 30px ${currentTheme.primary}`;
+    
+    document.getElementById('uiSub1').style.color = currentTheme.primary;
+    document.getElementById('uiSub1').style.borderBottomColor = currentTheme.primary;
+    
+    document.getElementById('uiSub2').style.color = currentTheme.primary;
+    document.getElementById('uiSub2').style.borderBottomColor = currentTheme.primary;
+    
+    document.getElementById('uiAudioLabel').style.color = currentTheme.primary;
+    
+    progressBarFill.style.background = currentTheme.primary;
+    progressBarFill.style.boxShadow = `0 0 10px ${currentTheme.primary}`;
+    
+    let controlSpans = document.querySelectorAll('.controls-box span');
+    for(let i = 0; i < controlSpans.length; i++) {
+        controlSpans[i].style.color = currentTheme.primary;
+    }
+}
+
+
+/**
+ * ============================================================================
+ * GAME STATE & GLOBAL VARIABLES
+ * ============================================================================
+ */
+
+// Audio Variables
+let audioCtx = null; 
+let sourceNode = null; 
+let songDuration = 0; 
+let audioStartTime = 0; 
+
+// The Accumulator for exact track position
+let currentTrackTime = 0;
+let checkpointTrackTime = 0;
+let audioOffsetTime = 0;
+
+// Game State Enum ('START', 'PLAYING', 'PAUSED', 'GAMEOVER', 'VICTORY')
+let gameState = 'START'; 
+let cameraX = 0; 
+let lastTime = 0;
+
+// Rhythm & Timing Accumulators
+let runTimerMs = 0; 
+let beatPulse = 0; 
+let camZoom = 1; 
+let shakeAmt = 0; 
+
+// Base Physics Configs
+const GRAVITY = 3600; 
+const JUMP_FORCE = 1050; 
+const WAVE_SPEED = 900;
+const DASH_SPEED_MULTI = 2.0; 
+const DASH_DURATION = 0.25; 
+const DASH_COOLDOWN = 1.0;
+const GRAPPLE_RADIUS = 500; 
+const ORB_RADIUS = 150;
+const HOOKSHOT_SPEED = 2400; 
+const MAX_JUMPS = 2;
+
+// Dynamic Variables
+let BASE_SPEED = 500; 
+let globalSpeedTimer = 0;
+
+// Entity Arrays
+let players = []; 
+let entities = []; 
+let particles = []; 
+let ghostTrails = [];
+
+// Level Data
+let groundY = 0; 
+let topBoundY = 0; 
+let generationX = 1000; 
+let levelDist = 0; 
+
+// Checkpoint Memory
+// We must save EVERYTHING about the state of the player and environment 
+// so that when we respawn, we resume precisely where we left off.
+let activeCheckpoint = {
+    x: 0,
+    seed: 0,
+    genX: 1000,
+    trackTime: 0,
+    timerMs: 0,
+    mode: 'CUBE',
+    keys: 0,
+    score: 0,
+    combo: 1,
+    speedMulti: 1.0,
+    mirrored: false
+};
+
+// Current Run Stats
+let pMode = 'CUBE'; 
+let pKeys = 0; 
+let pCombo = 1; 
+let pScore = 0;
+let SPEED_MULTI = 1.0;
+let isMirrored = false; 
+
+// Difficulty configurations loaded from Menu
+let diffParams = { 
+    gapMin: 250, 
+    gapMax: 200, 
+    spdBoost: 1.5, 
+    pendSpd: 1.0, 
+    fog: false 
+};
+
+
+/**
+ * ============================================================================
+ * INPUT HANDLING
+ * ============================================================================
+ */
+const keys = { 
+    Shift: false, 
+    C: false 
+}; 
+
+const mouse = { 
+    x: 0, 
+    y: 0, 
+    leftDown: false, 
+    leftEvent: false, 
+    rightDown: false 
+};
+
+// Key Down Events
+window.addEventListener('keydown', function(e) { 
+    if(e.key === 'Shift') {
+        keys.Shift = true; 
+    }
+    
+    if(e.code === 'KeyC') { 
+        keys.C = true; 
+        spawnPracticeCheckpoint(); 
+    }
+    
+    if(e.code === 'KeyR' && gameState === 'GAMEOVER') {
+        resetGame(false); 
+    }
+    
+    if(e.code === 'KeyM') {
+        togglePause();
+    }
+    
+    // Support jumping with Spacebar, Up Arrow, or W
+    if(e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+        if (!mouse.leftDown) {
+            mouse.leftEvent = true;
+        }
+        mouse.leftDown = true;
+    }
+});
+
+// Key Up Events
+window.addEventListener('keyup', function(e) { 
+    if(e.key === 'Shift') {
+        keys.Shift = false; 
+    }
+    
+    if(e.code === 'KeyC') {
+        keys.C = false; 
+    }
+    
+    if(e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+        mouse.leftDown = false;
+    }
+});
+
+// Mouse Moves
+canvas.addEventListener('mousemove', function(e) { 
+    mouse.x = e.clientX; 
+    mouse.y = e.clientY; 
+});
+
+// Mouse Clicks
+canvas.addEventListener('mousedown', function(e) { 
+    if(e.button === 0) { 
+        mouse.leftDown = true; 
+        mouse.leftEvent = true; 
+    } 
+    if(e.button === 2) {
+        mouse.rightDown = true; 
+    }
+});
+
+// Mouse Releases
+canvas.addEventListener('mouseup', function(e) { 
+    if(e.button === 0) {
+        mouse.leftDown = false; 
+    }
+    if(e.button === 2) {
+        mouse.rightDown = false; 
+    }
+});
+
+// Audio Upload Parsing
+audioUpload.addEventListener('change', function(e) {
+    if(!e.target.files[0]) {
+        return;
+    }
+    
+    // Must initialize Context on user gesture
+    if(!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    if(audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(ev) { 
+        audioCtx.decodeAudioData(
+            ev.target.result, 
+            function(buf) { 
+                songDuration = buf.duration; 
+                window.audioBuf = buf; 
+                document.getElementById('uiAudioLabel').innerText = "TRACK READY!";
+                document.getElementById('uiAudioLabel').style.color = "#0f0";
+            }, 
+            function(err) {
+                alert("Error decoding audio file. Please try another MP3 or WAV.");
+            }
+        ); 
+    };
+    
+    reader.readAsArrayBuffer(e.target.files[0]);
+    
+    // Clear input so selecting the same file works again if needed
+    e.target.value = null;
+});
+
+
+/**
+ * ============================================================================
+ * GAME LOGIC & INITIALIZATION
+ * ============================================================================
+ */
+function applyDifficulty() {
+    let d = difficultySelect.value; 
+    let b = parseInt(bpmInput.value) || 120;
+    
+    if(d === 'easy') { 
+        BASE_SPEED = b * 3.5; 
+        diffParams = {
+            gapMin: 400, 
+            gapMax: 300, 
+            spdBoost: 1.2, 
+            pendSpd: 0.6, 
+            fog: false
+        }; 
+    } 
+    else if(d === 'medium') { 
+        BASE_SPEED = b * 4.5; 
+        diffParams = {
+            gapMin: 250, 
+            gapMax: 250, 
+            spdBoost: 1.5, 
+            pendSpd: 1.0, 
+            fog: false
+        }; 
+    } 
+    else if(d === 'hard') { 
+        BASE_SPEED = b * 5.5; 
+        diffParams = {
+            gapMin: 150, 
+            gapMax: 150, 
+            spdBoost: 1.8, 
+            pendSpd: 1.4, 
+            fog: false
+        }; 
+    } 
+    else if(d === 'mega') { 
+        BASE_SPEED = b * 6.5; 
+        diffParams = {
+            gapMin: 100, 
+            gapMax: 100, 
+            spdBoost: 2.0, 
+            pendSpd: 2.0, 
+            fog: true
+        }; 
+    }
+    
+    if (diffParams.fog) {
+        fogLayer.style.opacity = '1';
+    } else {
+        fogLayer.style.opacity = '0';
+    }
+}
+
+function initPlayer() {
+    groundY = ch - 120; 
+    topBoundY = 120; 
+    
+    // Load state from active checkpoint
+    SPEED_MULTI = activeCheckpoint.speedMulti; 
+    pMode = activeCheckpoint.mode; 
+    pKeys = activeCheckpoint.keys; 
+    pCombo = activeCheckpoint.combo; 
+    pScore = activeCheckpoint.score; 
+    isMirrored = activeCheckpoint.mirrored;
+    
+    shakeAmt = 0; 
+    globalSpeedTimer = 0; 
+    
+    hudMode.innerText = pMode;
+    
+    // Safe Spawning logic
+    let spawnX = activeCheckpoint.x === 0 ? 200 : activeCheckpoint.x - 100;
+    if(spawnX < 200) {
+        spawnX = 200;
+    }
+
+    players = [{
+        x: spawnX, 
+        y: groundY - 40, 
+        vx: BASE_SPEED, 
+        vy: 0, 
+        w: 40, 
+        h: 40, 
+        rot: 0, 
+        gravDir: 1, 
+        onGround: false, 
+        jumps: 0, 
+        isDashing: false, 
+        dashTimer: 0, 
+        dashCool: 0, 
+        grapple: null, 
+        dead: false
+    }];
+    
+    cameraX = players[0].x - cw * 0.2;
+    updateAudioPitch();
+}
+
+function playTrack(offset) {
+    if(!window.audioBuf || !audioCtx) {
+        return;
+    }
+    
+    if(sourceNode) { 
+        try { 
+            sourceNode.stop(); 
+            sourceNode.disconnect(); 
+        } catch(e) {} 
+    }
+    
+    sourceNode = audioCtx.createBufferSource(); 
+    sourceNode.buffer = window.audioBuf;
+    sourceNode.playbackRate.value = SPEED_MULTI; 
+    sourceNode.connect(audioCtx.destination);
+    
+    sourceNode.start(0, offset); 
+    audioStartTime = audioCtx.currentTime;
+    
+    // We must track the offset so later calculations sync correctly
+    audioOffsetTime = offset;
+}
+
+function resetGame(hardReset = false) {
+    applyDifficulty(); 
+    cycleTheme();
+    
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    if (hardReset || !checkpointsToggle.checked) {
+        // HARD RESET: Completely clear state and start from 0
+        let inputID = levelIdInput.value.trim().toUpperCase();
+        let activeLevelIdString = "";
+        
+        if (inputID === "") {
+            activeLevelIdString = Math.random().toString(36).substring(2, 8).toUpperCase();
+        } else {
+            activeLevelIdString = inputID;
+        }
+        
+        // Reset Checkpoint State
+        activeCheckpoint = {
+            x: 0,
+            seed: window.hashString(activeLevelIdString),
+            genX: 1000,
+            trackTime: 0,
+            timerMs: 0,
+            mode: 'CUBE',
+            keys: 0,
+            score: 0,
+            combo: 1,
+            speedMulti: 1.0,
+            mirrored: false
+        };
+        
+        currentSeed = activeCheckpoint.seed; 
+        generationX = activeCheckpoint.genX; 
+        runTimerMs = activeCheckpoint.timerMs; 
+        currentTrackTime = activeCheckpoint.trackTime;
+        
+        entities = []; 
+        ghostTrails = []; 
+        particles = []; 
+        
+        if (songDuration > 0) {
+            levelDist = BASE_SPEED * songDuration;
+        } else {
+            levelDist = 0;
+        }
+        
+        playTrack(0);
+        
+    } else {
+        // SOFT RESET: Load from Checkpoint
+        currentSeed = activeCheckpoint.seed; 
+        generationX = activeCheckpoint.genX; 
+        
+        // Cull entities that spawned after our checkpoint to recreate the level exactly
+        entities = entities.filter(function(e) {
+            return e.x < generationX && (e.x < activeCheckpoint.x - 150 || e.x > activeCheckpoint.x + 50);
+        }); 
+        
+        ghostTrails = []; 
+        particles = [];
+        
+        runTimerMs = activeCheckpoint.timerMs; 
+        currentTrackTime = activeCheckpoint.trackTime;
+        
+        playTrack(currentTrackTime);
+    }
+    
+    initPlayer(); 
+    gameState = 'PLAYING'; 
+    showMenu(null); // Hide all menus
+    
+    lastTime = performance.now(); 
+    requestAnimationFrame(gameLoop);
+}
+
+function togglePause() {
+    if(gameState === 'PLAYING') { 
+        gameState = 'PAUSED'; 
+        showMenu('pauseScreen');
+        
+        if(audioCtx && audioCtx.state === 'running') {
+            audioCtx.suspend(); 
+        }
+    }
+    else if(gameState === 'PAUSED') { 
+        gameState = 'PLAYING'; 
+        showMenu(null);
+        
+        lastTime = performance.now(); 
+        if(audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume(); 
+        }
+        
+        requestAnimationFrame(gameLoop); 
+    }
+}
+
+function spawnPracticeCheckpoint() {
+    if (gameState !== 'PLAYING') {
+        return;
+    }
+    
+    entities.push({ 
+        type: 'checkpoint', 
+        x: players[0].x, 
+        y: groundY - 200, 
+        w: 60, 
+        h: 200, 
+        active: true, 
+        seed: currentSeed, 
+        genX: generationX 
+    });
+    
+    createExplosion(players[0].x, players[0].y, '#00ffcc'); 
+    triggerShake(15);
+}
+
+function updateAudioPitch() { 
+    if (sourceNode && audioCtx) {
+        sourceNode.playbackRate.setValueAtTime(SPEED_MULTI, audioCtx.currentTime); 
+    }
+}
+
+function triggerShake(amt) { 
+    if (shakeToggle.checked) {
+        shakeAmt = amt; 
+    }
+}
+
+
+/** 
+ * ============================================================================
+ * PROCEDURAL LEVEL GENERATOR (CHUNK BY CHUNK)
+ * ============================================================================
+ */
+function spawnChunk() {
+    while (generationX < cameraX + cw * 2.5) {
+        
+        // Spawn Goal Line if we have reached the end of the song
+        if (levelDist > 0 && generationX > levelDist) { 
+            entities.push({ 
+                type: 'goal', 
+                x: generationX + 500, 
+                y: 0, 
+                w: 100, 
+                h: ch 
+            }); 
+            generationX += 5000; 
+            break; 
+        }
+
+        let r = window.seededRandom(); 
+        let gap = diffParams.gapMin + (window.seededRandom() * diffParams.gapMax);
+        let sX = generationX + gap; 
+        let bs = 60; 
+        let cw_chunk = 0;
+
+        // --------------------------------------------------
+        // LAYER 1: CEILING GENERATOR
+        // --------------------------------------------------
+        let ceilX = sX;
+        
+        while(ceilX < sX + 1200) { 
+            let cr = window.seededRandom();
+            
+            if (cr < 0.2) { 
+                entities.push({ 
+                    type: 'block', 
+                    x: ceilX, 
+                    y: topBoundY, 
+                    w: bs*3, 
+                    h: bs 
+                }); 
+                entities.push({ 
+                    type: 'spike', 
+                    x: ceilX + bs, 
+                    y: topBoundY + bs, 
+                    w: bs, 
+                    h: bs 
+                }); 
+                ceilX += bs * 4; 
+            } 
+            else if (cr < 0.4) { 
+                entities.push({ 
+                    type: 'saw', 
+                    x: ceilX + bs, 
+                    y: topBoundY + 40, 
+                    r: 35, 
+                    rot: 0 
+                }); 
+                ceilX += bs * 3; 
+            } 
+            else if (cr < 0.6) { 
+                entities.push({ 
+                    type: 'block', 
+                    x: ceilX, 
+                    y: topBoundY, 
+                    w: bs, 
+                    h: bs*2 
+                }); 
+                ceilX += bs * 2; 
+            } 
+            else { 
+                ceilX += bs * 2; 
+            }
+        }
+
+        // --------------------------------------------------
+        // LAYER 2: FLOOR & MAIN OBSTACLES
+        // --------------------------------------------------
+        
+        // GRAPPLE MECHANIC INCREASED SPAWN RATE
+        if (r < 0.10) { 
+            // 1. STANDARD GRAPPLE CHASM (10% Chance)
+            entities.push({ 
+                type: 'node', 
+                x: sX + 150, 
+                y: groundY - 250, 
+                r: 25, 
+                color: '#ffea00', 
+                cooldown: 0 
+            });
+            
+            for(let i=0; i<8; i++) {
+                entities.push({ 
+                    type: 'spike', 
+                    x: sX + (i*50), 
+                    y: groundY, 
+                    w: 50, 
+                    h: -50 
+                });
+            }
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 400, 
+                y: groundY - bs, 
+                w: bs*2, 
+                h: bs 
+            });
+            
+            cw_chunk = 400 + bs*2;
+        }
+        else if (r < 0.20) {
+            // 2. DOUBLE GRAPPLE SWING (10% Chance - NEW!)
+            entities.push({ 
+                type: 'node', 
+                x: sX + 150, 
+                y: topBoundY + 150, 
+                r: 25, 
+                color: '#ffea00', 
+                cooldown: 0 
+            });
+            
+            entities.push({ 
+                type: 'node', 
+                x: sX + 500, 
+                y: topBoundY + 150, 
+                r: 25, 
+                color: '#ffea00', 
+                cooldown: 0 
+            });
+            
+            for(let i=0; i<15; i++) {
+                entities.push({ 
+                    type: 'spike', 
+                    x: sX + (i*50), 
+                    y: groundY, 
+                    w: 50, 
+                    h: -50 
+                });
+            }
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 750, 
+                y: groundY - bs, 
+                w: bs*3, 
+                h: bs 
+            });
+            
+            cw_chunk = 750 + bs*3;
+        }
+        else if (r < 0.28) { 
+            // 3. RED PORTAL (Anti-Gravity Ceiling Run)
+            entities.push({ 
+                type: 'portal_red', 
+                x: sX, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            // Build spikes on floor, ceiling is safe
+            for(let i=0; i<8; i++) { 
+                entities.push({ 
+                    type: 'spike', 
+                    x: sX + 300 + (i*50), 
+                    y: groundY, 
+                    w: 50, 
+                    h: -50 
+                }); 
+            }
+            
+            // Revert gravity safely
+            entities.push({ 
+                type: 'portal_white', 
+                x: sX + 800, 
+                y: topBoundY, 
+                w: 60, 
+                h: 250 
+            });
+            
+            cw_chunk = 1200; 
+        } 
+        else if (r < 0.36) { 
+            // 4. MIRROR PORTAL (Reverse screen)
+            entities.push({ 
+                type: 'portal_mirror', 
+                x: sX, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            entities.push({ 
+                type: 'text', 
+                x: sX + 250, 
+                y: groundY - 100, 
+                txt: "REVERSE!" 
+            });
+            
+            entities.push({ 
+                type: 'spike', 
+                x: sX + 400, 
+                y: groundY, 
+                w: 50, 
+                h: -50 
+            });
+            
+            entities.push({ 
+                type: 'portal_mirror', 
+                x: sX + 800, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            cw_chunk = 1200;
+        } 
+        else if (r < 0.44) { 
+            // 5. WAVE CORRIDOR
+            entities.push({ 
+                type: 'portal_wave', 
+                x: sX, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 200, 
+                y: topBoundY, 
+                w: 500, 
+                h: 200 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 200, 
+                y: groundY - 150, 
+                w: 500, 
+                h: 150 
+            });
+            
+            entities.push({ 
+                type: 'portal_cube', 
+                x: sX + 800, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            cw_chunk = 1200;
+        } 
+        else if (r < 0.50) { 
+            // 6. BLUE PORTAL (Ship Mode Corridor)
+            entities.push({ 
+                type: 'portal_ship', 
+                x: sX, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 300, 
+                y: topBoundY, 
+                w: 500, 
+                h: 250 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 300, 
+                y: groundY - 100, 
+                w: 500, 
+                h: 100 
+            });
+            
+            entities.push({ 
+                type: 'portal_cube', 
+                x: sX + 1000, 
+                y: groundY - 250, 
+                w: 60, 
+                h: 250 
+            });
+            
+            cw_chunk = 1400;
+        } 
+        else if (r < 0.58) { 
+            // 7. ORB PUZZLE
+            entities.push({ 
+                type: 'block', 
+                x: sX, 
+                y: groundY - bs*2, 
+                w: bs*3, 
+                h: bs*2 
+            });
+            
+            entities.push({ 
+                type: 'blue_orb', 
+                x: sX + bs*4.5, 
+                y: groundY - bs*3.5, 
+                r: 20, 
+                color: '#00aaff' 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + bs*6, 
+                y: topBoundY, 
+                w: bs*4, 
+                h: bs*2 
+            });
+            
+            entities.push({ 
+                type: 'black_orb', 
+                x: sX + bs*10, 
+                y: topBoundY + bs*4, 
+                r: 20, 
+                color: '#444' 
+            });
+            
+            entities.push({ 
+                type: 'spike', 
+                x: sX + bs*10, 
+                y: groundY, 
+                w: 40, 
+                h: -40 
+            });
+            
+            cw_chunk = bs*12;
+        } 
+        else if (r < 0.66) { 
+            // 8. SQUEEZE BOX DASH
+            entities.push({ 
+                type: 'text', 
+                x: sX + 30, 
+                y: groundY - bs*2.2, 
+                txt: "DASH!" 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 150, 
+                y: groundY - bs*5, 
+                w: bs*5, 
+                h: bs*1.5 
+            });
+            
+            entities.push({ 
+                type: 'glass', 
+                x: sX + 150, 
+                y: groundY - bs*3.5, 
+                w: bs*5, 
+                h: bs*2.0, 
+                color: '#ff8800' 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + 150, 
+                y: groundY - bs*1.5, 
+                w: bs*5, 
+                h: bs*1.5 
+            });
+            
+            cw_chunk = 150 + bs*6;
+        } 
+        else if (r < 0.72) { 
+            // 9. PENDULUM
+            entities.push({ 
+                type: 'pendulum', 
+                x: sX + 300, 
+                y: topBoundY, 
+                length: 300, 
+                angle: Math.PI/4, 
+                speed: 2.0 * diffParams.pendSpd, 
+                r: 30 
+            });
+            
+            entities.push({ 
+                type: 'jump_orb', 
+                x: sX + 200, 
+                y: groundY - 150, 
+                r: 20, 
+                color: '#ff00ff' 
+            });
+            
+            cw_chunk = 600;
+        } 
+        else if (r < 0.78) { 
+            // 10. GHOST BLOCK BRIDGE (Timed jumping)
+            for(let i = 0; i < 5; i++) {
+                entities.push({ 
+                    type: 'ghost_block', 
+                    x: sX + (i*bs*3), 
+                    y: groundY - bs*2, 
+                    w: bs*2, 
+                    h: bs 
+                });
+            }
+            
+            cw_chunk = bs*15;
+        } 
+        else if (r < 0.84) { 
+            // 11. MOVING PLATFORMS
+            entities.push({ 
+                type: 'move_plat', 
+                x: sX, 
+                y: groundY - bs*2, 
+                w: bs*2, 
+                h: 20, 
+                minX: sX, 
+                maxX: sX + 300, 
+                spd: 150, 
+                dir: 1 
+            });
+            
+            for(let i = 0; i < 10; i++) {
+                entities.push({ 
+                    type: 'spike', 
+                    x: sX + (i*50), 
+                    y: groundY, 
+                    w: 50, 
+                    h: -50 
+                });
+            }
+            
+            cw_chunk = 600;
+        } 
+        else if (r < 0.90) { 
+            // 12. MOVING SAWBLADE VALLEY
+            entities.push({ 
+                type: 'block', 
+                x: sX, 
+                y: groundY - bs*2, 
+                w: bs, 
+                h: bs*2 
+            });
+            
+            entities.push({ 
+                type: 'saw', 
+                x: sX + bs*2.5, 
+                y: groundY - 40, 
+                r: 40, 
+                rot: 0 
+            });
+            
+            // Vertical moving saw
+            entities.push({ 
+                type: 'move_saw', 
+                x: sX + bs*5, 
+                y: groundY - 100, 
+                r: 40, 
+                rot: 0, 
+                minY: groundY - 200, 
+                maxY: groundY - 40, 
+                spd: 200, 
+                dir: 1 
+            });
+            
+            entities.push({ 
+                type: 'block', 
+                x: sX + bs*7, 
+                y: groundY - bs*2, 
+                w: bs, 
+                h: bs*2 
+            });
+            
+            cw_chunk = bs*9;
+        } 
+        else { 
+            // 13. CHECKPOINT
+            if (checkpointsToggle.checked) {
+                entities.push({ 
+                    type: 'checkpoint', 
+                    x: sX, 
+                    y: groundY - 200, 
+                    w: 60, 
+                    h: 200, 
+                    active: true, 
+                    seed: currentSeed, 
+                    genX: sX + 100 
+                });
+            }
+            cw_chunk = 150;
+        }
+
+        generationX = sX + cw_chunk;
+    }
+    
+    // Memory Garbage Collection
+    entities = entities.filter(function(e) {
+        return e.x > cameraX - 1000;
+    });
+}
+
+
+/**
+ * ============================================================================
+ * UTIL FUNCTIONS
+ * ============================================================================
+ */
+function createExplosion(x, y, c) { 
+    for(let i = 0; i < 30; i++) {
+        particles.push({ 
+            x: x, 
+            y: y, 
+            vx: (Math.random() - 0.5) * 800, 
+            vy: (Math.random() - 0.5) * 800, 
+            life: 1.0, 
+            c: c 
+        });
+    }
+}
+
+function formatTime(ms) {
+    let ts = Math.floor(ms / 1000); 
+    let m = Math.floor(ts / 60); 
+    let s = ts % 60; 
+    let msec = Math.floor((ms % 1000) / 10);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${msec.toString().padStart(2, '0')}`;
+}
+
+function die(r) { 
+    if(players[0].dead) {
+        return; 
+    }
+    
+    players.forEach(function(p) { 
+        p.dead = true; 
+        createExplosion(p.x, p.y, '#f00'); 
+    }); 
+    
+    gameState = 'GAMEOVER'; 
+    deathReasonTxt.innerText = r; 
+    triggerShake(25); 
+    
+    if(sourceNode) {
+        sourceNode.playbackRate.value = 0.1;
+    }
+    
+    setTimeout(function() {
+        showMenu('gameOverScreen');
+    }, 500); 
+}
+
+function win() { 
+    players.forEach(function(p) { 
+        p.dead = true; 
+    }); 
+    
+    gameState = 'VICTORY';
+    victoryTimeTxt.innerText = formatTime(runTimerMs); 
+    showMenu('victoryScreen');
+}
+
+// Axis-Aligned Bounding Box Collision Detection
+function AABB(px, py, pw, ph, bx, by, bw, bh) { 
+    return px < bx + bw && px + pw > bx && py < by + bh && py + ph > by; 
+}
+
+
+/**
+ * ============================================================================
+ * PHYSICS & STATE UPDATE LOOP
+ * ============================================================================
+ */
+function update(dt) {
+    if(gameState !== 'PLAYING') {
+        return;
+    }
+    
+    spawnChunk(); 
+    
+    // Core Timers
+    runTimerMs += dt * 1000;
+    
+    // Update Track Time only if audio is running to stay in sync
+    if (audioCtx && audioCtx.state === 'running' && window.audioBuf) {
+        currentTrackTime = audioOffsetTime + ((audioCtx.currentTime - audioStartTime) * SPEED_MULTI);
+    } else {
+        currentTrackTime += dt * SPEED_MULTI;
+    }
+    
+    // Rhythm Calculations
+    let bpm = parseInt(bpmInput.value) || 120; 
+    let beatSecs = 60 / bpm;
+    
+    // beatPulse oscillates exactly on the beat
+    beatPulse = Math.abs(Math.sin((currentTrackTime) * (Math.PI / beatSecs)));
+    
+    if ((currentTrackTime % beatSecs) < dt) { 
+        camZoom = 1.05; 
+    } 
+    camZoom += (1.0 - camZoom) * 10 * dt;
+    
+    if (shakeAmt > 0) { 
+        shakeAmt -= dt * 40; 
+        if (shakeAmt < 0) {
+            shakeAmt = 0; 
+        }
+    }
+
+    // Ghost Trails Logic
+    players.forEach(function(p) {
+        if (p.isDashing || globalSpeedTimer > 0) {
+            if(Math.random() > 0.5) {
+                ghostTrails.push({ 
+                    x: p.x, 
+                    y: p.y, 
+                    rot: p.rot, 
+                    life: 0.5, 
+                    c: p.isDashing ? '#fff' : currentTheme.primary 
+                });
+            }
+        }
+    });
+    
+    for(let i = ghostTrails.length - 1; i >= 0; i--) { 
+        ghostTrails[i].life -= dt; 
+        if(ghostTrails[i].life <= 0) {
+            ghostTrails.splice(i, 1);
+        }
+    }
+
+    // Background Entity Updates
+    for(let e of entities) {
+        
+        if(e.type === 'crumble' && e.active) { 
+            e.timer -= dt; 
+            if(e.timer <= 0) {
+                e.dead = true; 
+            }
+        }
+        
+        if(e.type === 'laser_track') {
+            if(e.state === 'aim') { 
+                e.y += (players[0].y - e.y) * 5 * dt; 
+                e.timer -= dt; 
+                if(e.timer <= 0){
+                    e.state = 'fire'; 
+                    e.timer = 0.5; 
+                    triggerShake(5); 
+                }
+            } else { 
+                e.timer -= dt; 
+                if(e.timer <= 0) {
+                    e.dead = true; 
+                }
+            }
+        }
+        
+        if(e.type === 'move_plat' || e.type === 'crusher_h') {
+            e.x += e.spd * e.dir * dt;
+            if(e.x < e.minX) { 
+                e.x = e.minX; 
+                e.dir = 1; 
+            } 
+            if(e.x > e.maxX) { 
+                e.x = e.maxX; 
+                e.dir = -1; 
+            }
+        }
+        
+        if(e.type === 'move_saw') {
+            e.rotation += 12 * dt;
+            e.y += e.spd * e.dir * dt;
+            if(e.y < e.minY) { 
+                e.y = e.minY; 
+                e.dir = 1; 
+            } 
+            if(e.y > e.maxY) { 
+                e.y = e.maxY; 
+                e.dir = -1; 
+            }
+        }
+        
+        if(e.type === 'saw') {
+            e.rotation += 12 * dt;
+        }
+    }
+    
+    entities = entities.filter(e => !e.dead); 
+
+    // Global Dashing and Speed Cooldowns
+    if (keys.Shift && players[0].dashCool <= 0 && !players[0].isDashing) { 
+        players.forEach(function(p) { 
+            p.isDashing = true; 
+            p.dashTimer = DASH_DURATION; 
+            p.dashCool = DASH_COOLDOWN; 
+            p.vy = 0; 
+        }); 
+        triggerShake(8);
+    }
+    
+    if (players[0].dashCool > 0) {
+        players.forEach(function(p) {
+            p.dashCool -= dt;
+        });
+    }
+    
+    if (globalSpeedTimer > 0) { 
+        globalSpeedTimer -= dt; 
+        if(globalSpeedTimer <= 0) { 
+            SPEED_MULTI = 1.0; 
+            updateAudioPitch(); 
+        } 
+    }
+
+    // Dynamic Physics Setup
+    let curGrav = pMode === 'UFO' ? GRAVITY * 0.6 : (pMode === 'WAVE' || pMode === 'SHIP' ? 0 : GRAVITY);
+    let inWind = false;
+    
+    for(let e of entities) {
+        if(e.type === 'wind' && AABB(players[0].x, players[0].y, players[0].w, players[0].h, e.x, e.y, e.w, e.h)) {
+            inWind = true;
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // PLAYER PHYSICS LOOP 
+    // -------------------------------------------------------------------
+    for (let i = 0; i < players.length; i++) {
+        let p = players[i];
+        
+        // Find Interactive Objects in range
+        let orb = entities.find(function(e) {
+            return e.type.includes('orb') && !e.used && Math.hypot(e.x - (p.x + p.w/2), e.y - (p.y + p.h/2)) < 80;
+        });
+        
+        let node = entities.find(function(e) {
+            return e.type === 'node' && Math.hypot(e.x - (p.x + p.w/2), e.y - (p.y + p.h/2)) < GRAPPLE_RADIUS;
+        });
+        
+        // Mode specific inputs
+        if (pMode === 'WAVE') {
+            p.vy = (mouse.leftDown ? -1 : 1) * p.gravDir * WAVE_SPEED;
+        } 
+        else if (pMode === 'SHIP') {
+            if (mouse.leftDown) {
+                p.vy -= JUMP_FORCE * 3.5 * p.gravDir * dt;
+            } else {
+                p.vy += GRAVITY * 0.8 * p.gravDir * dt;
+            }
+        }
+        else {
+            if (mouse.leftEvent) {
+                if (orb) {
+                    if (orb.type === 'blue_orb') { 
+                        p.gravDir *= -1; 
+                        p.vy = -JUMP_FORCE * 0.5 * p.gravDir; 
+                    } 
+                    else if (orb.type === 'black_orb') { 
+                        p.vy = 4000 * p.gravDir; 
+                        triggerShake(15); 
+                    } 
+                    else if (orb.type === 'green_orb') { 
+                        p.isDashing = true; 
+                        p.dashTimer = 0.3; 
+                        p.vy = 0; 
+                    } 
+                    else { 
+                        p.vy = -JUMP_FORCE * p.gravDir; 
+                    }
+                    
+                    orb.used = true; 
+                    p.onGround = false; 
+                    p.jumps = 1; 
+                    pCombo++; 
+                    createExplosion(orb.x, orb.y, '#fff'); 
+                    triggerShake(5);
+                } 
+                else if (pMode === 'UFO') {
+                    p.vy = -JUMP_FORCE * 0.7 * p.gravDir; 
+                    p.onGround = false;
+                } 
+                else if (p.onGround || p.jumps < MAX_JUMPS) {
+                    p.vy = -(inWind ? JUMP_FORCE * 0.6 : JUMP_FORCE) * p.gravDir; 
+                    p.onGround = false; 
+                    p.jumps++;
+                }
+            }
+            
+            // X & Y Acceleration
+            if (p.isDashing) { 
+                p.dashTimer -= dt; 
+                p.vx = BASE_SPEED * SPEED_MULTI * DASH_SPEED_MULTI; 
+                if(p.dashTimer <= 0) {
+                    p.isDashing = false; 
+                }
+            } else { 
+                p.vx = BASE_SPEED * SPEED_MULTI; 
+                p.vy += (inWind ? curGrav * 0.4 : curGrav) * p.gravDir * dt; 
+            }
+            
+            // Grapple Execution
+            if (mouse.rightDown && node) {
+                p.onGround = false;
+                let dx = node.x - (p.x + p.w/2); 
+                let dy = node.y - (p.y + p.h/2); 
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                
+                if (dist > 40) {
+                    let pullVx = (dx / dist) * HOOKSHOT_SPEED;
+                    p.vx = Math.max(BASE_SPEED * SPEED_MULTI, pullVx);
+                    p.vy = (dy / dist) * HOOKSHOT_SPEED; 
+                    p.jumps = 0; 
+                } else {
+                    p.vx = BASE_SPEED * SPEED_MULTI * 1.3; 
+                    p.vy = -JUMP_FORCE * p.gravDir * 0.5; 
+                    node.cooldown = 0.5; 
+                    createExplosion(node.x, node.y, '#ffea00');
+                }
+            }
+        }
+
+        // Apply X Velocity
+        p.x += p.vx * dt; 
+        let hitWall = false;
+        
+        for (let e of entities) {
+            
+            // Block Wall Collision
+            if ((e.type === 'block' || e.type === 'ghost_block' || e.type === 'move_plat' || e.type === 'crusher_h') && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                if (e.type === 'ghost_block' && beatPulse < 0.5) {
+                    continue;
+                }
+                if (p.vx > 0) { 
+                    p.x = e.x - p.w; 
+                    hitWall = true; 
+                }
+            }
+            
+            // Bumper Repulsion
+            if (e.type === 'bumper' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                if(p.isDashing) { 
+                    e.dead = true; 
+                    createExplosion(e.x, e.y, '#0ff'); 
+                    triggerShake(15); 
+                } else { 
+                    p.vx = -BASE_SPEED; // Bounce Backwards safely
+                    triggerShake(20); 
+                }
+            }
+            
+            // Glass Dash Wall
+            if (e.type === 'glass' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                if(p.isDashing) { 
+                    e.type = 'shattered'; 
+                    createExplosion(e.x, e.y, '#f80'); 
+                    triggerShake(10); 
+                } else {
+                    hitWall = true;
+                }
+            }
+            
+            // Teleporter
+            if (e.type === 'tele_in' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                p.x = e.linkX; 
+                p.y = e.linkY; 
+                createExplosion(p.x, p.y, '#f0f'); 
+            }
+            
+            // Collectible Key
+            if (e.type === 'key' && !e.used && AABB(p.x, p.y, p.w, p.h, e.x-e.r, e.y-e.r, e.r*2, e.r*2)) { 
+                e.used = true; 
+                pKeys++; 
+                createExplosion(e.x, e.y, '#ff0'); 
+            }
+            
+            // Locked Door
+            if (e.type === 'lock_block') { 
+                if(pKeys > 0 && AABB(p.x + 50, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                    e.dead = true; 
+                    pKeys--; 
+                    createExplosion(e.x, e.y, '#fff'); 
+                    triggerShake(10); 
+                } else if(AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                    hitWall = true; 
+                }
+            }
+            
+            // Laser Hit
+            if (e.type === 'laser_track' && e.state === 'fire' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                die("Fried by Laser.");
+            }
+            
+            // -------------------------
+            // PORTAL COLLISIONS
+            // -------------------------
+            if (e.type === 'portal_ufo' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                pMode = 'UFO'; 
+                hudMode.innerText = 'UFO'; 
+                hudMode.style.color = '#0ff'; 
+                createExplosion(e.x, e.y, '#0ff'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_cube' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                pMode = 'CUBE'; 
+                hudMode.innerText = 'CUBE'; 
+                hudMode.style.color = '#fff'; 
+                createExplosion(e.x, e.y, '#fff'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_wave' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                pMode = 'WAVE'; 
+                hudMode.innerText = 'WAVE'; 
+                hudMode.style.color = '#ff0'; 
+                createExplosion(e.x, e.y, '#ff0'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_ship' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                pMode = 'SHIP'; 
+                hudMode.innerText = 'SHIP'; 
+                hudMode.style.color = '#0ff'; 
+                createExplosion(e.x, e.y, '#0ff'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_red' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                p.gravDir = -1; // Invert gravity
+                createExplosion(e.x, e.y, '#f00'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_white' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                p.gravDir = 1; // Restore gravity
+                createExplosion(e.x, e.y, '#fff'); 
+                e.dead = true; 
+            }
+            
+            if (e.type === 'portal_mirror' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                isMirrored = !isMirrored; 
+                createExplosion(e.x, e.y, '#fff'); 
+                e.dead = true; 
+                window.triggerFlashbang(); 
+            }
+            
+            if (e.type === 'speed_pad' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) { 
+                SPEED_MULTI = e.multi; 
+                globalSpeedTimer = 0.5; 
+                updateAudioPitch(); 
+            }
+        }
+        
+        if (hitWall) {
+            die("Crashed into a solid wall.");
+        }
+
+        // Apply Y Velocity
+        p.y += p.vy * dt; 
+        p.onGround = false;
+        
+        // Floor & Ceiling bounds collision
+        if (p.gravDir === 1 && p.y + p.h >= groundY) { 
+            p.y = groundY - p.h; 
+            p.vy = 0; 
+            p.onGround = true; 
+            p.jumps = 0; 
+            pCombo = 1; 
+            p.rot = Math.round(p.rot / (Math.PI/2)) * (Math.PI/2); 
+        } 
+        else if (p.gravDir === -1 && p.y <= topBoundY) { 
+            p.y = topBoundY; 
+            p.vy = 0; 
+            p.onGround = true; 
+            p.jumps = 0; 
+            pCombo = 1; 
+            p.rot = Math.round(p.rot / (Math.PI/2)) * (Math.PI/2); 
+        }
+
+        // Object Top-Bottom Collision
+        for (let e of entities) {
+            if ((e.type === 'block' || e.type === 'ghost_block' || e.type === 'move_plat' || e.type === 'crusher_h') && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                
+                if (e.type === 'ghost_block' && beatPulse < 0.5) {
+                    continue;
+                }
+                
+                if (e.type === 'move_plat') { 
+                    p.x += e.spd * e.dir * dt; 
+                } 
+                
+                if (e.type === 'crumble') { 
+                    e.active = true; 
+                }
+                
+                if (p.vy > 0) { 
+                    p.y = e.y - p.h; 
+                    p.vy = 0; 
+                    if(p.gravDir === 1) { 
+                        p.onGround = true; 
+                        p.jumps = 0; 
+                        pCombo = 1; 
+                        p.rot = Math.round(p.rot / (Math.PI/2)) * (Math.PI/2); 
+                    } 
+                }
+                else if (p.vy < 0) { 
+                    p.y = e.y + e.h; 
+                    p.vy = 0; 
+                    if(p.gravDir === -1) { 
+                        p.onGround = true; 
+                        p.jumps = 0; 
+                        pCombo = 1; 
+                        p.rot = Math.round(p.rot / (Math.PI/2)) * (Math.PI/2); 
+                    } 
+                }
+            }
+            
+            // Hazards
+            if (e.type === 'pad' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                if ((p.vy > 0 && p.gravDir === 1) || (p.vy < 0 && p.gravDir === -1)) {
+                    p.y = p.gravDir === 1 ? e.y - p.h : e.y + e.h;
+                    p.vy = -JUMP_FORCE * 1.6 * p.gravDir; 
+                    p.onGround = false; 
+                    p.jumps = 1; 
+                    createExplosion(e.x + e.w/2, p.gravDir === 1 ? e.y : e.y+e.h, '#00ffaa');
+                    triggerShake(5);
+                }
+            }
+            
+            // Refactored Spike Collision (Much Fairer Hitbox)
+            if (e.type === 'spike') {
+                let isUp = e.h < 0; 
+                
+                let hitW = e.w * 0.4; // 40% of the width is lethal (middle)
+                let hitX = e.x + (e.w / 2) - (hitW / 2);
+                
+                let hitH = Math.abs(e.h) * 0.6; // 60% of the height is lethal
+                let hitY = isUp ? (e.y + e.h) : (e.y + e.h * 0.4);
+                
+                if (AABB(p.x, p.y, p.w, p.h, hitX, hitY, hitW, hitH)) { 
+                    die("Impaled by a spike."); 
+                }
+            }
+            
+            if (e.type === 'saw' || e.type === 'move_saw') {
+                let dist = Math.hypot((p.x + p.w/2) - e.x, (p.y + p.h/2) - e.y);
+                if (dist < e.r + (p.w/2) - 5) {
+                    die("Sliced by a Sawblade.");
+                }
+            }
+            
+            // Checkpoints
+            if (e.type === 'checkpoint' && e.active && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                
+                // Save the exact state
+                activeCheckpoint = {
+                    x: e.x,
+                    seed: e.seed,
+                    genX: e.genX,
+                    trackTime: currentTrackTime,
+                    timerMs: runTimerMs,
+                    mode: pMode,
+                    keys: pKeys,
+                    score: pScore,
+                    combo: pCombo,
+                    speedMulti: SPEED_MULTI,
+                    mirrored: isMirrored
+                };
+                
+                e.active = false; 
+                createExplosion(e.x + e.w/2, groundY, currentTheme.primary);
+            }
+            
+            if (e.type === 'goal' && AABB(p.x, p.y, p.w, p.h, e.x, e.y, e.w, e.h)) {
+                win();
+            }
+        }
+        
+        // Free-fall Rotation
+        if (!p.onGround && !p.isDashing && pMode === 'CUBE') {
+            p.rot += (Math.PI * 1.5) * p.gravDir * SPEED_MULTI * dt;
+        }
+        else if (pMode === 'SHIP') {
+            // Smoothly rotate the ship based on velocity
+            let targetRot = (p.vy / 1000) * p.gravDir;
+            if (targetRot > 0.5) targetRot = 0.5;
+            if (targetRot < -0.5) targetRot = -0.5;
+            p.rot += (targetRot - p.rot) * 10 * dt;
+        }
+        
+        // Failsafe bounds Check
+        if (p.y > ch + 200 || p.y < -200) {
+            die("Fell out of bounds.");
+        }
+    }
+    
+    // Clear Input Frame
+    mouse.leftEvent = false; 
+    
+    // Calculate Score & Viewport Camera
+    pScore = Math.floor(players[0].x / 10) + (pCombo * 50);
+    cameraX += (players[0].x - cw * 0.3 - cameraX) * 15 * dt;
+
+    // Update Particles
+    for(let i = particles.length - 1; i >= 0; i--) { 
+        let pt = particles[i]; 
+        pt.x += pt.vx * dt; 
+        pt.y += pt.vy * dt; 
+        pt.life -= dt; 
+        
+        if(pt.life <= 0) {
+            particles.splice(i, 1); 
+        }
+    }
+    
+    // Apply UI Text Updates
+    hudScore.innerText = pScore; 
+    hudCombo.innerText = `x${pCombo}`; 
+    hudDist.innerText = Math.floor(players[0].x / 100);
+    hudSpeed.innerText = SPEED_MULTI.toFixed(1);
+    hudTime.innerText = formatTime(runTimerMs); 
+    hudKeys.innerText = pKeys;
+    
+    if(levelDist > 0) {
+        progressBarFill.style.width = `${Math.min((players[0].x / levelDist) * 100, 100)}%`;
+    }
+}
+
+
+/** 
+ * ============================================================================
+ * MASTER RENDERING LOOP
+ * ============================================================================
+ */
+
+// Helper to draw geometric portals
+function drawPortal(ctx, x, y, w, h, color, time) {
+    ctx.save(); 
+    ctx.translate(x + w/2, y + h/2);
+    ctx.shadowBlur = 20; 
+    ctx.shadowColor = color; 
+    ctx.strokeStyle = color; 
+    ctx.lineWidth = 4;
+    
+    ctx.beginPath(); 
+    ctx.ellipse(0, 0, w/2, h/2, 0, 0, Math.PI*2); 
+    ctx.stroke();
+    
+    ctx.rotate(time * 2);
+    
+    ctx.beginPath();
+    for(let i = 0; i < 6; i++) { 
+        ctx.lineTo(Math.cos(i * Math.PI/3) * w/2, Math.sin(i * Math.PI/3) * h/2.5); 
+    }
+    ctx.closePath(); 
+    ctx.stroke();
+    
+    ctx.restore();
+}
+
+function draw() {
+    
+    // Draw Background
+    ctx.fillStyle = currentTheme.bgBot; 
+    ctx.fillRect(0, 0, cw, ch);
+    
+    // Equalizer Visualizer Background
+    ctx.fillStyle = currentTheme.secondary; 
+    ctx.globalAlpha = 0.15;
+    
+    for(let i = 0; i < cw; i += 60) {
+        let h = (Math.sin(i * 0.05 + runTimerMs * 0.01) * 80 + 80) * beatPulse;
+        ctx.fillRect(i, ch - 120 - h, 40, h); 
+        ctx.fillRect(i, 120, 40, h);
+    }
+    ctx.globalAlpha = 1.0;
+
+    ctx.save(); 
+    
+    // Apply Mirror Effect Transform
+    if (isMirrored) { 
+        ctx.translate(cw, 0); 
+        ctx.scale(-1, 1); 
+    }
+
+    // Apply Screen Shake
+    if(shakeAmt > 0) {
+        ctx.translate((Math.random() - 0.5) * shakeAmt, (Math.random() - 0.5) * shakeAmt);
+    }
+    
+    // Map Camera Translation
+    ctx.translate(-cameraX, 0);
+
+    // Apply Camera Zoom (scaling from the center of the camera)
+    let cx = cameraX + cw/2; 
+    let cy = ch/2;
+    ctx.translate(cx, cy); 
+    ctx.scale(camZoom, camZoom); 
+    ctx.translate(-cx, -cy);
+
+    // Draw Floor & Ceiling Base Geometry
+    ctx.fillStyle = currentTheme.ground; 
+    ctx.fillRect(cameraX - cw, groundY, cw * 3, ch); 
+    ctx.fillRect(cameraX - cw, 0, cw * 3, topBoundY);
+    
+    ctx.strokeStyle = currentTheme.primary; 
+    ctx.lineWidth = 4;
+    
+    ctx.beginPath(); 
+    ctx.moveTo(cameraX - cw, groundY); 
+    ctx.lineTo(cameraX + cw * 3, groundY); 
+    ctx.moveTo(cameraX - cw, topBoundY); 
+    ctx.lineTo(cameraX + cw * 3, topBoundY); 
+    ctx.stroke();
+
+    // Render All Level Entities
+    for(let e of entities) {
+        
+        // Standard Blocks
+        if(e.type === 'block' || e.type === 'move_plat' || e.type === 'crusher_h') {
+            ctx.fillStyle = currentTheme.ground; 
+            ctx.fillRect(e.x, e.y, e.w, e.h);
+            
+            ctx.strokeStyle = '#fff'; 
+            ctx.lineWidth = 3; 
+            ctx.strokeRect(e.x, e.y, e.w, e.h);
+        } 
+        // Ghost Blocks
+        else if (e.type === 'ghost_block') {
+            ctx.fillStyle = '#fff'; 
+            ctx.globalAlpha = beatPulse > 0.5 ? 0.8 : 0.1;
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            ctx.globalAlpha = 1.0;
+        } 
+        // Crumbling Blocks
+        else if (e.type === 'crumble') {
+            ctx.fillStyle = '#555'; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            
+            ctx.strokeStyle = '#f00'; 
+            ctx.strokeRect(e.x, e.y, e.w, e.h);
+        } 
+        // Spikes
+        else if (e.type === 'spike' || e.type === 'fake_spike') {
+            if(e.type === 'fake_spike') {
+                ctx.globalAlpha = 0.3;
+            }
+            
+            let pHeight = e.h + (Math.sign(e.h) * beatPulse * 10); 
+            ctx.fillStyle = currentSpikeColor; 
+            
+            ctx.beginPath(); 
+            ctx.moveTo(e.x, e.y); 
+            ctx.lineTo(e.x + e.w/2, e.y + pHeight); 
+            ctx.lineTo(e.x + e.w, e.y); 
+            ctx.fill();
+            
+            ctx.strokeStyle = '#fff'; 
+            ctx.lineWidth = 2; 
+            ctx.stroke(); 
+            ctx.globalAlpha = 1.0;
+        } 
+        // Lasers
+        else if (e.type === 'laser_track') {
+            ctx.fillStyle = e.state === 'aim' ? 'rgba(255,0,0,0.3)' : '#ff0000';
+            ctx.shadowBlur = e.state === 'fire' ? 30 : 0; 
+            ctx.shadowColor = '#f00';
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            ctx.shadowBlur = 0;
+        } 
+        // Keys
+        else if (e.type === 'key' && !e.used) {
+            ctx.fillStyle = '#ffea00'; 
+            ctx.beginPath(); 
+            ctx.arc(e.x, e.y, e.r, 0, Math.PI*2); 
+            ctx.fill();
+        } 
+        // Lock Doors
+        else if (e.type === 'lock_block') {
+            ctx.fillStyle = 'rgba(255,234,0,0.2)'; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            
+            ctx.strokeStyle = '#ffea00'; 
+            ctx.strokeRect(e.x, e.y, e.w, e.h);
+        } 
+        // Portals (Using helper function)
+        else if (e.type.includes('portal_')) {
+            let pc = '#fff';
+            if (e.type === 'portal_ufo') pc = '#0ff';
+            if (e.type === 'portal_wave') pc = '#ff0';
+            if (e.type === 'portal_red') pc = '#f00';
+            if (e.type === 'portal_white') pc = '#fff';
+            if (e.type === 'portal_ship') pc = '#0ff';
+            if (e.type === 'portal_mirror') pc = '#0f0';
+            
+            drawPortal(ctx, e.x, e.y, e.w, e.h, pc, runTimerMs / 1000);
+        } 
+        // Text Overlays
+        else if (e.type === 'text') {
+            ctx.save(); 
+            ctx.translate(e.x, e.y); 
+            
+            if(isMirrored) {
+                ctx.scale(-1, 1);
+            }
+            
+            ctx.fillStyle = '#fff'; 
+            ctx.font = '700 40px Orbitron'; 
+            ctx.globalAlpha = beatPulse; 
+            ctx.fillText(e.txt, 0, 0); 
+            ctx.globalAlpha = 1;
+            
+            ctx.restore();
+        } 
+        // Wind Zones
+        else if (e.type === 'wind') {
+            ctx.fillStyle = 'rgba(0,255,255,0.1)'; 
+            ctx.fillRect(e.x, e.y, e.w, e.h);
+            
+            for(let i = 0; i < 5; i++) { 
+                ctx.fillStyle = '#fff'; 
+                ctx.fillRect(e.x + Math.random() * e.w, e.y + Math.random() * e.h, 2, 10); 
+            }
+        } 
+        // Bumper Walls
+        else if (e.type === 'bumper') {
+            ctx.fillStyle = '#f00'; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            
+            ctx.strokeStyle = '#fff'; 
+            ctx.strokeRect(e.x, e.y, e.w, e.h);
+        } 
+        // Jump/Action Orbs
+        else if (e.type.includes('orb') && !e.used) {
+            ctx.beginPath(); 
+            ctx.arc(e.x, e.y, e.r + (beatPulse * 10), 0, Math.PI*2); 
+            ctx.strokeStyle = e.color; 
+            ctx.lineWidth = 3; 
+            ctx.stroke();
+            
+            ctx.fillStyle = e.color; 
+            ctx.beginPath(); 
+            ctx.arc(e.x, e.y, e.r - 5, 0, Math.PI*2); 
+            ctx.fill();
+        } 
+        // Node / Grapple Hook Visuals
+        else if (e.type === 'node') {
+            ctx.beginPath(); 
+            ctx.arc(e.x, e.y, e.r, 0, Math.PI*2); 
+            
+            if (e.cooldown > 0) {
+                ctx.strokeStyle = '#555'; 
+                ctx.fillStyle = '#333';
+            } else {
+                ctx.strokeStyle = '#ffea00'; 
+                ctx.fillStyle = '#ffaa00';
+            }
+            
+            ctx.lineWidth = 4; 
+            ctx.stroke();
+            ctx.fill();
+            
+            // Pulsing ring
+            if (e.cooldown <= 0) {
+                ctx.beginPath(); 
+                ctx.arc(e.x, e.y, e.r + (beatPulse * 15), 0, Math.PI*2); 
+                ctx.strokeStyle = 'rgba(255, 234, 0, 0.4)'; 
+                ctx.lineWidth = 2; 
+                ctx.stroke();
+            }
+        }
+        // Checkpoints
+        else if (e.type === 'checkpoint') {
+            ctx.fillStyle = e.active ? currentTheme.primary : currentTheme.ground; 
+            ctx.globalAlpha = e.active ? 0.3 : 0.8; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            ctx.globalAlpha = 1.0;
+        } 
+        // Dash Glass
+        else if (e.type === 'glass') {
+            ctx.fillStyle = 'rgba(255, 136, 0, 0.3)'; 
+            ctx.strokeStyle = '#ff8800'; 
+            ctx.lineWidth = 2; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            ctx.strokeRect(e.x, e.y, e.w, e.h);
+            
+            ctx.strokeStyle = `rgba(255, 136, 0, ${beatPulse})`;
+            for(let hy = e.y + 10; hy < e.y + e.h; hy += 20) { 
+                ctx.beginPath(); 
+                ctx.moveTo(e.x, hy); 
+                ctx.lineTo(e.x + e.w, hy); 
+                ctx.stroke(); 
+            }
+        } 
+        // Jump Pads
+        else if (e.type === 'pad') {
+            ctx.fillStyle = '#00ffaa'; 
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = '#00ffaa'; 
+            ctx.fillRect(e.x, e.y, e.w, e.h); 
+            ctx.shadowBlur = 0;
+        } 
+        // Speed Pads
+        else if (e.type === 'speed_pad') {
+            ctx.fillStyle = e.multi > 1.0 ? '#ff0000' : '#00aaff'; 
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = ctx.fillStyle; 
+            ctx.fillRect(e.x, e.y, e.w, e.h);
+            
+            ctx.save(); 
+            ctx.translate(e.x + 10, e.y + 10); 
+            
+            if(isMirrored) {
+                ctx.scale(-1, 1);
+            }
+            
+            ctx.fillStyle = '#fff'; 
+            ctx.font = '20px Courier'; 
+            ctx.fillText(e.multi > 1.0 ? '>>>' : '<<<', 0, 0); 
+            ctx.restore();
+            ctx.shadowBlur = 0;
+        } 
+        // Spinning Saws
+        else if (e.type === 'saw' || e.type === 'move_saw') {
+            ctx.save(); 
+            ctx.translate(e.x, e.y); 
+            ctx.rotate(e.rotation);
+            ctx.fillStyle = '#444'; 
+            
+            ctx.beginPath(); 
+            ctx.arc(0, 0, e.r - 5, 0, Math.PI*2); 
+            ctx.fill();
+            
+            ctx.strokeStyle = '#fff'; 
+            ctx.lineWidth = 4; 
+            ctx.shadowBlur = 15; 
+            ctx.shadowColor = currentSpikeColor;
+            
+            ctx.beginPath();
+            for(let i = 0; i < 8; i++) {
+                let angle = (i * Math.PI*2)/8;
+                ctx.moveTo(Math.cos(angle)*(e.r-5), Math.sin(angle)*(e.r-5));
+                ctx.lineTo(Math.cos(angle+0.2)*e.r, Math.sin(angle+0.2)*e.r);
+                ctx.lineTo(Math.cos(angle+0.4)*(e.r-5), Math.sin(angle+0.4)*(e.r-5));
+            }
+            ctx.stroke(); 
+            ctx.restore();
+        } 
+        // Pendulums
+        else if (e.type === 'pendulum') {
+            ctx.strokeStyle = '#fff'; 
+            ctx.lineWidth = 4; 
+            
+            ctx.beginPath(); 
+            ctx.moveTo(e.x, e.y); 
+            ctx.lineTo(e.px, e.py); 
+            ctx.stroke();
+            
+            ctx.fillStyle = currentSpikeColor; 
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = currentSpikeColor;
+            
+            ctx.beginPath(); 
+            ctx.arc(e.px, e.py, e.r, 0, Math.PI*2); 
+            ctx.fill(); 
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    // Render Grapple Rope
+    if (players.length > 0 && players[0].grappleNode && gameState === 'PLAYING') {
+        ctx.strokeStyle = '#ffea00'; 
+        ctx.lineWidth = 4; 
+        ctx.shadowColor = '#ffea00'; 
+        ctx.shadowBlur = 15;
+        
+        ctx.beginPath();
+        ctx.moveTo(players[0].x + players[0].w/2, players[0].y + players[0].h/2);
+        ctx.lineTo(players[0].grappleNode.x, players[0].grappleNode.y);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+
+    // Render Players
+    if (gameState === 'PLAYING') {
+        for(let p of players) {
+            if (p.dead) {
+                continue;
+            }
+            
+            ctx.save(); 
+            ctx.translate(p.x + p.w/2, p.y + p.h/2); 
+            ctx.rotate(p.rot);
+            
+            let pColor = currentTheme.primary;
+            if(pMode === 'UFO' || pMode === 'SHIP') {
+                pColor = '#0ff';
+            }
+            if(pMode === 'WAVE') {
+                pColor = '#ff0';
+            }
+            if(p.isDashing) {
+                pColor = '#fff';
+            }
+
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = pColor;
+            
+            ctx.fillStyle = pColor; 
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+            
+            ctx.fillStyle = '#000'; 
+            ctx.fillRect(-p.w/4, -p.h/4, p.w/2, p.h/2);
+            
+            ctx.restore();
+        }
+    }
+
+    // Render Explosion Particles
+    for (let p of particles) { 
+        ctx.globalAlpha = p.life; 
+        ctx.fillStyle = p.c; 
+        ctx.fillRect(p.x, p.y, 6, 6); 
+    }
+    
+    ctx.globalAlpha = 1.0; 
+    ctx.restore();
+}
+
+/** 
+ * ============================================================================
+ * CLOCK & TICK
+ * ============================================================================
+ */
+function gameLoop(timestamp) {
+    let dt = (timestamp - lastTime) / 1000; 
+    
+    if(dt > 0.1) {
+        dt = 0.1; 
+    }
+    lastTime = timestamp;
+    
+    update(dt); 
+    draw();
+    
+    if(gameState === 'PLAYING') {
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+/** 
+ * ============================================================================
+ * HTML UI BUTTON BINDINGS
+ * ============================================================================
+ */
+document.getElementById('startBtn').addEventListener('click', () => {
+    resetGame(true);
+});
+
+document.getElementById('respawnBtn').addEventListener('click', () => {
+    resetGame(false);
+});
+
+document.getElementById('resumeBtn').addEventListener('click', togglePause);
+
+document.getElementById('quitBtn').addEventListener('click', () => { 
+    gameState = 'START'; 
+    showMenu('startScreen');
+    
+    if(sourceNode) {
+        try { sourceNode.stop(); sourceNode.disconnect(); } catch(e){}
+    }
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => { 
+    levelIdInput.value = ""; 
+    gameState = 'START'; 
+    showMenu('startScreen');
+    
+    if(sourceNode) {
+        try { sourceNode.stop(); sourceNode.disconnect(); } catch(e){}
+    }
+});
+
+document.getElementById('victoryRestartBtn').addEventListener('click', () => { 
+    levelIdInput.value = ""; 
+    gameState = 'START'; 
+    showMenu('startScreen');
+    
+    if(sourceNode) {
+        try { sourceNode.stop(); sourceNode.disconnect(); } catch(e){}
+    }
+});
+</script>
+</body>
+</html>
