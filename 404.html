@@ -1,20 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <!-- Automatic Meta Refresh Redirect (Fires after 0 seconds) -->
-    <meta http-equiv="refresh" content="0;url=https://github.io">
-    <link rel="canonical" href="https://github.io">
-    
-    <!-- JavaScript Fallback Redirect -->
-    <script type="text/javascript">
-        window.location.href = "https://maximum404404.github.io/";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - System Error | Maximum404 Studios</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #0d1117 url('BG.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #58a6ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Semi-transparent dark overlay for background legibility */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 17, 23, 0.85);
+            z-index: 1;
+        }
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            border: 2px solid #21262d;
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+            z-index: 2;
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 4rem;
+            color: #f85149;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(248, 81, 73, 0.3);
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: #c9d1d9;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        p {
+            color: #8b949e;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        .timer {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            background: #238636;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+        }
+        .btn:hover {
+            background: #2ea44f;
+            box-shadow: 0 0 15px rgba(46, 164, 79, 0.4);
+        }
+    </style>
+    <script>
+        // Set the countdown duration in seconds
+        let countdownTime = 10;
+        
+        function startCountdown() {
+            const timerElement = document.getElementById('countdown');
+            const interval = setInterval(() => {
+                countdownTime--;
+                timerElement.textContent = countdownTime;
+                
+                if (countdownTime <= 0) {
+                    clearInterval(interval);
+                    window.location.href = "https://github.io";
+                }
+            }, 1000);
+        }
+        window.onload = startCountdown;
     </script>
 </head>
 <body>
-    <p>Redirecting to Max Norris Portfolio... If you are not redirected automatically, 
-       <a href="https://maximum404404.github.io/">click here</a>.
-    </p>
+    <div class="overlay"></div>
+    <div class="error-container">
+        <h1>404</h1>
+        <h2>System Matrix Error</h2>
+        <p>The requested data vault route could not be found or has been shifted in the directory structure.</p>
+        <p>Rerouting to main mainframe base in <span id="countdown" class="timer">10</span> seconds...</p>
+        <a href="https://github.io" class="btn">Deploy Manual Return</a>
+    </div>
 </body>
 </html>
