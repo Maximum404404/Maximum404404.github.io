@@ -142,29 +142,30 @@
                 The latest professional updates, posts and milestones from Max Norris, pulled live from LinkedIn.
             </p>
             <script src="https://platform.elfsight.com/platform.js" async></script>
-            <div class="elfsight-app-6b4e17f3-edaa-4ca7-ad81-bf4727ea213b" data-elfsight-app-lazy></div>
-        </section>
-
-        <!-- YouTube Showreel Feed -->
-        <section class="glass-panel">
-            <h2>Latest Video Showreels</h2>
-            <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
-                Auto-updating feed streaming the newest studio videos straight from the channel's uploads playlist.
-            </p>
-            <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUxkODbCRHT07b5TG8qz77Hw"
-                    title="Latest studio videos"
-                    width="100%" height="450" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
+            <div class="elfsight-app-6b4e17f3-edaa-4ca7-ad81-bf4727ea213b"></div>
         </section>
 
         <!-- GitHub Activity Feed -->
         <section class="glass-panel">
             <h2>GitHub Code Architecture</h2>
             <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
-                The five most recent public events from the Maximum404404 repositories, fetched live from the GitHub API.
+                The 30 most recent code commits across the Maximum404404 repositories, pulled live from the GitHub API.
             </p>
-            <div id="github-feed" style="color:#ccc; line-height:1.7; text-align:left;">Loading latest activity&hellip;</div>
+            <div id="github-feed" style="color:#ccc; line-height:1.7; text-align:left; max-height:600px; overflow-y:auto; padding-right:10px;">Loading latest activity&hellip;</div>
+        </section>
+
+        <!-- YouTube Showreel Feed -->
+        <section class="glass-panel">
+            <h2>Video Showreels</h2>
+            <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
+                Every video from the studio channel, newest first. Click any thumbnail to play it in the viewer.
+            </p>
+            <iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/videoseries?list=UUxkODbCRHT07b5TG8qz77Hw"
+                    title="Studio video player"
+                    width="100%" height="450" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            <div id="yt-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; margin-top:20px; text-align:left;"></div>
         </section>
 
         <footer class="glass-panel">
@@ -179,34 +180,123 @@
 
     </div>
 
-    <!-- GitHub live activity loader -->
+    <!-- GitHub live commit feed loader -->
     <!-- No API token here on purpose: anything in this file is public once deployed.
-         The public events endpoint allows 60 requests/hour per visitor IP without auth. -->
+         Unauthenticated GitHub API allows 60 requests/hour per visitor IP; this page uses 9. -->
     <script type="text/javascript">
     (function () {
         var feed = document.getElementById("github-feed");
-        fetch("https://api.github.com/users/Maximum404404/events/public")
+
+        function esc(s) {
+            return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        fetch("https://api.github.com/users/Maximum404404/repos?sort=pushed&per_page=8")
             .then(function (res) {
                 if (!res.ok) throw new Error("GitHub API responded with " + res.status);
                 return res.json();
             })
-            .then(function (events) {
-                var items = events.slice(0, 5).map(function (ev) {
-                    var name = ev.type
-                        .replace(/Event$/, "")
-                        .replace(/([a-z])([A-Z])/g, "$1 $2");
-                    var date = new Date(ev.created_at).toLocaleDateString("en-GB", {
-                        day: "numeric", month: "short", year: "numeric"
-                    });
-                    return '<p style="margin-bottom:12px;">' +
-                           '<strong style="color:#7CFC00;">' + name + '</strong> &mdash; ' +
-                           ev.repo.name +
-                           ' <span style="color:#888;">(' + date + ')</span></p>';
-                });
-                feed.innerHTML = items.length ? items.join("") : "<p>No recent public activity.</p>";
+            .then(function (repos) {
+                return Promise.all(repos.map(function (repo) {
+                    return fetch("https://api.github.com/repos/" + repo.full_name + "/commits?per_page=15")
+                        .then(function (res) { return res.ok ? res.json() : []; })
+                        .then(function (commits) {
+                            return commits.map(function (c) {
+                                return {
+                                    repo: repo.name,
+                                    fullName: repo.full_name,
+                                    sha: c.sha || "",
+                                    url: c.html_url || "https://github.com/" + repo.full_name,
+                                    message: ((c.commit && c.commit.message) || "").split("\n")[0],
+                                    author: (c.commit && c.commit.author && c.commit.author.name) || "",
+                                    date: (c.commit && c.commit.author && c.commit.author.date) || ""
+                                };
+                            });
+                        })
+                        .catch(function () { return []; });
+                }));
+            })
+            .then(function (lists) {
+                var commits = [].concat.apply([], lists);
+                commits.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+                commits = commits.slice(0, 30);
+                if (!commits.length) {
+                    feed.innerHTML = "<p>No recent activity found.</p>";
+                    return;
+                }
+                feed.innerHTML = commits.map(function (c) {
+                    var when = c.date ? new Date(c.date).toLocaleString("en-GB", {
+                        day: "numeric", month: "short", year: "numeric",
+                        hour: "2-digit", minute: "2-digit"
+                    }) : "";
+                    return '<div style="border-left:2px solid #7CFC00; background:rgba(124,252,0,0.05); padding:10px 14px; margin-bottom:12px;">' +
+                           '<a href="https://github.com/' + esc(c.fullName) + '" target="_blank" style="color:#7CFC00; font-weight:bold; text-decoration:none;">' + esc(c.repo) + '</a> ' +
+                           '<a href="' + esc(c.url) + '" target="_blank" style="color:#9ad1ff; font-size:0.85em; text-decoration:none;">#' + esc(c.sha.slice(0, 7)) + '</a>' +
+                           ' <span style="color:#888; font-size:0.85em;">(' + when + ')</span>' +
+                           '<div style="color:#ccc; margin-top:4px;">' + esc(c.message) + '</div>' +
+                           (c.author ? '<div style="color:#777; font-size:0.85em; margin-top:2px;">by ' + esc(c.author) + '</div>' : '') +
+                           '</div>';
+                }).join("");
             })
             .catch(function () {
                 feed.innerHTML = "<p>Unable to load GitHub activity right now.</p>";
+            });
+    })();
+    </script>
+
+    <!-- YouTube channel video grid loader -->
+    <!-- YouTube's RSS feed has no CORS headers, so it is fetched through the free corsproxy.io
+         proxy, falling back to AllOrigins. If both fail the playlist player above still shows every video. -->
+    <script type="text/javascript">
+    (function () {
+        var grid = document.getElementById("yt-grid");
+        var player = document.getElementById("yt-player");
+
+        function esc(s) {
+            return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        var rss = "https://www.youtube.com/feeds/videos.xml?channel_id=UCxkODbCRHT07b5TG8qz77Hw";
+        fetch("https://corsproxy.io/?url=" + encodeURIComponent(rss))
+            .then(function (res) {
+                if (!res.ok) throw new Error("Proxy responded with " + res.status);
+                return res.text();
+            })
+            .then(function (xmlText) {
+                if (xmlText.indexOf("<entry") === -1) { throw new Error("No entries in response"); }
+                return xmlText;
+            })
+            .catch(function () {
+                return fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(rss))
+                    .then(function (res) { return res.text(); });
+            })
+            .then(function (xmlText) {
+                var xml = new DOMParser().parseFromString(xmlText, "text/xml");
+                var entries = Array.prototype.slice.call(xml.getElementsByTagName("entry"));
+                entries.forEach(function (entry) {
+                    var idEl = entry.getElementsByTagNameNS("*", "videoId")[0];
+                    var titleEl = entry.getElementsByTagName("title")[0];
+                    var dateEl = entry.getElementsByTagName("published")[0];
+                    if (!idEl || !titleEl) { return; }
+                    var id = idEl.textContent;
+                    var title = titleEl.textContent;
+                    var date = dateEl ? new Date(dateEl.textContent).toLocaleDateString("en-GB", {
+                        day: "numeric", month: "short", year: "numeric"
+                    }) : "";
+                    var card = document.createElement("div");
+                    card.style.cssText = "cursor:pointer; border:1px solid rgba(124,252,0,0.25); background:rgba(0,0,0,0.35); padding:8px; border-radius:6px;";
+                    card.innerHTML = '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" style="width:100%; display:block; border-radius:4px;">' +
+                                     '<div style="color:#ccc; font-size:0.9em; margin-top:8px; line-height:1.4;">' + esc(title) + '</div>' +
+                                     '<div style="color:#777; font-size:0.8em; margin-top:4px;">' + date + '</div>';
+                    card.onclick = function () {
+                        player.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
+                        player.scrollIntoView({ behavior: "smooth", block: "center" });
+                    };
+                    grid.appendChild(card);
+                });
+            })
+            .catch(function () {
+                /* Grid stays empty; the playlist player above still covers the channel. */
             });
     })();
     </script>
