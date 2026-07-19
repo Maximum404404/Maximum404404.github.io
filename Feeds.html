@@ -135,18 +135,36 @@
             </div>
         </section>
 
-        <!-- Live Social Feed (Curator.io) -->
+        <!-- LinkedIn Activity Feed -->
         <section class="glass-panel">
-            <h2>Live Social Feed</h2>
+            <h2>LinkedIn Activity</h2>
             <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
-                Auto-updating feed pulling the latest posts from across the studio's social channels.
+                The latest professional updates, posts and milestones from Max Norris, pulled live from LinkedIn.
             </p>
-            <!-- Place <div> tag where you want the feed to appear -->
-            <div id="curator-feed-default-feed-layout"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
-            <div class="feeds-action-row" style="justify-content:center; margin-top:24px;">
-                <a href="https://www.linkedin.com/company/error404404-studios/" target="_blank" class="btn-prime">Studios Page ↗</a>
-                <a href="https://www.youtube.com/channel/UCxkODbCRHT07b5TG8qz77Hw" target="_blank" class="btn-sec">YouTube Channel ↗</a>
-            </div>
+            <script src="https://platform.elfsight.com/platform.js" async></script>
+            <div class="elfsight-app-6b4e17f3-edaa-4ca7-ad81-bf4727ea213b" data-elfsight-app-lazy></div>
+        </section>
+
+        <!-- YouTube Showreel Feed -->
+        <section class="glass-panel">
+            <h2>Latest Video Showreels</h2>
+            <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
+                Auto-updating feed streaming the newest studio videos straight from the channel's uploads playlist.
+            </p>
+            <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUxkODbCRHT07b5TG8qz77Hw"
+                    title="Latest studio videos"
+                    width="100%" height="450" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </section>
+
+        <!-- GitHub Activity Feed -->
+        <section class="glass-panel">
+            <h2>GitHub Code Architecture</h2>
+            <p style="color:#aaa; margin-bottom:20px; line-height:1.8;">
+                The five most recent public events from the Maximum404404 repositories, fetched live from the GitHub API.
+            </p>
+            <div id="github-feed" style="color:#ccc; line-height:1.7; text-align:left;">Loading latest activity&hellip;</div>
         </section>
 
         <footer class="glass-panel">
@@ -161,13 +179,35 @@
 
     </div>
 
-    <!-- Curator.io live feed loader -->
+    <!-- GitHub live activity loader -->
+    <!-- No API token here on purpose: anything in this file is public once deployed.
+         The public events endpoint allows 60 requests/hour per visitor IP without auth. -->
     <script type="text/javascript">
-    /* curator-feed-default-feed-layout */
-    (function(){
-    var i,e,d=document,s="script";i=d.createElement("script");i.async=1;i.charset="UTF-8";
-    i.src="https://cdn.curator.io/published/f08f5162-898f-4bcb-a748-c2110698ae4f.js";
-    e=d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+    (function () {
+        var feed = document.getElementById("github-feed");
+        fetch("https://api.github.com/users/Maximum404404/events/public")
+            .then(function (res) {
+                if (!res.ok) throw new Error("GitHub API responded with " + res.status);
+                return res.json();
+            })
+            .then(function (events) {
+                var items = events.slice(0, 5).map(function (ev) {
+                    var name = ev.type
+                        .replace(/Event$/, "")
+                        .replace(/([a-z])([A-Z])/g, "$1 $2");
+                    var date = new Date(ev.created_at).toLocaleDateString("en-GB", {
+                        day: "numeric", month: "short", year: "numeric"
+                    });
+                    return '<p style="margin-bottom:12px;">' +
+                           '<strong style="color:#7CFC00;">' + name + '</strong> &mdash; ' +
+                           ev.repo.name +
+                           ' <span style="color:#888;">(' + date + ')</span></p>';
+                });
+                feed.innerHTML = items.length ? items.join("") : "<p>No recent public activity.</p>";
+            })
+            .catch(function () {
+                feed.innerHTML = "<p>Unable to load GitHub activity right now.</p>";
+            });
     })();
     </script>
 
